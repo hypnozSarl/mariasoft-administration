@@ -1,11 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
-              steps {
-                  git 'https://github.com/hypnozSarl/mariasoft-administration.git'
-            }
-        }
         stage("list branches") {
             steps {
                 script {
