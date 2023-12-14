@@ -2,8 +2,16 @@ pipeline {
     agent any
     stages {
         stage('Checkout') {
+              steps {
+                  git 'https://github.com/hypnozSarl/mariasoft-administration.git'
+            }
+        }
+        stage("list branches") {
             steps {
-                git 'https://github.com/hypnozSarl/mariasoft-administration.git'
+                script {
+                    branches = sh(script: "git branch -r", returnStdout: true).trim()
+                    echo "${branches}"
+                }
             }
         }
         stage('Build with Maven') {
