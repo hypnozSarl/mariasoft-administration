@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools{
-        jdk 'Java21' // Update to your version
+        jdk 'Java-21' // Update to your version
         maven 'maven-3.9.6' // Update to your version
     }
 
