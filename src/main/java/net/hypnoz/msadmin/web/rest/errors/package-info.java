@@ -1,0 +1,1 @@
+package net.hypnoz.msadmin.web.rest.errors;
