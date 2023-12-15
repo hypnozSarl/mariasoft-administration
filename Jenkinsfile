@@ -6,24 +6,19 @@ pipeline {
     }
 
     stages {
-        stage('Cleanup Workspace'){
-            steps{
-                deleteDir()
-            }
-        }
         stage('Build') {
             steps {
-               sh 'mvn clean'
+               sh 'hello'
             }
         }
         stage('Test') {
             steps {
-                sh 'mvn test'
+                sh 'testt'
             }
         }
         stage('SonarQube Analysis'){
             steps{
-                withSonarQubeEnv('My SonarQube Server') {
+                withSonarQubeEnv('SonarCube-server') {
                     sh 'mvn sonar:sonar'
                 }
             }
