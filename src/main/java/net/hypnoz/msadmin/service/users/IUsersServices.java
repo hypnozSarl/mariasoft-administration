@@ -1,6 +1,8 @@
 package net.hypnoz.msadmin.service.users;
 
-import net.mariasoft.administrations.dtos.UsersDto;
+
+
+import net.hypnoz.msadmin.dtos.UsersDto;
 
 import java.util.List;
 

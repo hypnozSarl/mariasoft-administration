@@ -8,9 +8,7 @@ import lombok.experimental.FieldDefaults;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-/**
- * DTO for {@link net.mariasoft.administrations.domain.Structures}
- */
+
 @Getter
 @Setter
 @Builder

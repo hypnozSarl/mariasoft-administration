@@ -1,8 +1,6 @@
 package net.hypnoz.msadmin.config;
 
 import com.github.benmanes.caffeine.jcache.configuration.CaffeineConfiguration;
-import net.mariasoft.administrations.utils.MariasoftProperies;
-import net.mariasoft.administrations.utils.PrefixedKeyGenerator;
 import org.hibernate.cache.jcache.ConfigSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;

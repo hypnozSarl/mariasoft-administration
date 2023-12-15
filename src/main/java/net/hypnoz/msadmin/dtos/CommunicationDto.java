@@ -5,9 +5,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 
-/**
- * DTO for {@link net.mariasoft.administrations.domain.CommunCommunication}
- */
+
 @Getter
 @Setter
 @Builder

@@ -1,6 +1,7 @@
 package net.hypnoz.msadmin.exceptions;
 
-import net.mariasoft.administrations.web.rest.errors.BadRequestAlertException;
+
+import net.hypnoz.msadmin.web.rest.errors.BadRequestAlertException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

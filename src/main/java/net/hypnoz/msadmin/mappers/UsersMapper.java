@@ -1,7 +1,7 @@
 package net.hypnoz.msadmin.mappers;
 
-import net.mariasoft.administrations.domain.Users;
-import net.mariasoft.administrations.dtos.UsersDto;
+import net.hypnoz.msadmin.domain.Users;
+import net.hypnoz.msadmin.dtos.UsersDto;
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)

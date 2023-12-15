@@ -1,6 +1,7 @@
 package net.hypnoz.msadmin.service.structres;
 
-import net.mariasoft.administrations.dtos.StructuresDto;
+
+import net.hypnoz.msadmin.dtos.StructuresDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

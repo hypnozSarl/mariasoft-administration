@@ -1,8 +1,6 @@
 package net.hypnoz.msadmin.config.declaration;
 
 import io.swagger.v3.oas.models.info.Info;
-import net.mariasoft.administrations.utils.MariasoftOpenApiCustomizer;
-import net.mariasoft.administrations.utils.MariasoftProperies;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

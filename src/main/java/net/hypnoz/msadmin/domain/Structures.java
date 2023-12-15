@@ -3,9 +3,10 @@ package net.hypnoz.msadmin.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import net.mariasoft.administrations.enumeration.FormeJuridiqueEnum;
-import net.mariasoft.administrations.enumeration.TypeSocieteEnum;
-import net.mariasoft.administrations.enumeration.ZoneCommercialEnum;
+
+import net.hypnoz.msadmin.enumeration.FormeJuridiqueEnum;
+import net.hypnoz.msadmin.enumeration.TypeSocieteEnum;
+import net.hypnoz.msadmin.enumeration.ZoneCommercialEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 

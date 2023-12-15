@@ -1,7 +1,8 @@
 package net.hypnoz.msadmin.config;
 
-import net.mariasoft.administrations.utils.MariasoftOpenApiCustomizer;
-import net.mariasoft.administrations.utils.MariasoftProperies;
+
+import net.hypnoz.msadmin.utils.MariasoftOpenApiCustomizer;
+import net.hypnoz.msadmin.utils.MariasoftProperies;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;

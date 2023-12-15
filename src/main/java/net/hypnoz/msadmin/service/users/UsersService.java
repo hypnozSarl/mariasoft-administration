@@ -1,10 +1,10 @@
 package net.hypnoz.msadmin.service.users;
 
 import lombok.RequiredArgsConstructor;
-import net.mariasoft.administrations.domain.Users;
-import net.mariasoft.administrations.dtos.UsersDto;
-import net.mariasoft.administrations.mappers.UsersMapper;
-import net.mariasoft.administrations.repository.UsersRepository;
+import net.hypnoz.msadmin.domain.Users;
+import net.hypnoz.msadmin.dtos.UsersDto;
+import net.hypnoz.msadmin.mappers.UsersMapper;
+import net.hypnoz.msadmin.repository.UsersRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UsersService implements IUsersServices{
-    private final  UsersMapper usersMapper;
+    private final UsersMapper usersMapper;
     private final UsersRepository usersRepository;
     /**
      * @param usersDto

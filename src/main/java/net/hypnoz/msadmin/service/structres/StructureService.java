@@ -1,10 +1,11 @@
 package net.hypnoz.msadmin.service.structres;
 
-import net.mariasoft.administrations.domain.Structures;
-import net.mariasoft.administrations.dtos.StructuresDto;
-import net.mariasoft.administrations.mappers.StructuresMapper;
-import net.mariasoft.administrations.repository.StructuresRepository;
-import net.mariasoft.administrations.utils.OsUtils;
+
+import net.hypnoz.msadmin.domain.Structures;
+import net.hypnoz.msadmin.dtos.StructuresDto;
+import net.hypnoz.msadmin.mappers.StructuresMapper;
+import net.hypnoz.msadmin.repository.StructuresRepository;
+import net.hypnoz.msadmin.utils.OsUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
