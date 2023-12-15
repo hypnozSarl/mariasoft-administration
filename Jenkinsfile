@@ -1,17 +1,20 @@
 pipeline {
     agent any
-    tools{
-        maven 'maven3'
-    }
+
     stages {
-        stage('Build with Maven') {
+        stage('Build') {
             steps {
-               sh 'mvn clean'
+                echo 'Building..'
             }
         }
         stage('Test') {
             steps {
-                sh 'mvn test'
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
             }
         }
     }
