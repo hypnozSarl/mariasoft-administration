@@ -1,15 +1,19 @@
 pipeline {
     agent any
-       tools{
-        maven 'maven-3.9.6'
-       }
-    environment {
-       SONAR_TOKEN = credentials('sqa_4ee0d0098e9c881d14a61b040b524634568bc05e')
+    tools{
+        jdk 'Java21' // Update to your version
+        maven 'maven-3.9.6' // Update to your version
     }
+
     stages {
+        stage('Cleanup Workspace'){
+            steps{
+                deleteDir()
+            }
+        }
         stage('Build') {
             steps {
-               h 'mvn -B -DskipTests clean package'
+               sh 'mvn -B -DskipTests clean package'
             }
         }
         stage('Test') {
@@ -19,7 +23,9 @@ pipeline {
         }
         stage('SonarQube Analysis'){
             steps{
-                sh 'mvn sonar:sonar'
+                withSonarQubeEnv('My SonarQube Server') {
+                    sh 'mvn sonar:sonar'
+                }
             }
         }
         stage('Deploy') {
