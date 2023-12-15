@@ -1,6 +1,8 @@
 package net.hypnoz.msadmin.config.declaration;
 
 import io.swagger.v3.oas.models.info.Info;
+import net.hypnoz.msadmin.utils.MariasoftOpenApiCustomizer;
+import net.hypnoz.msadmin.utils.MariasoftProperies;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,10 +45,10 @@ public class MariasoftSpringDocGroupsConfiguration {
     /**
      * <p>Constructor for OpenApiAutoConfiguration.</p>
      *
-     * @param jHipsterProperties a {@link MariasoftProperies} object.
+     * @param mariasoftProperies a {@link MariasoftProperies} object.
      */
-    public MariasoftSpringDocGroupsConfiguration(MariasoftProperies jHipsterProperties) {
-        properties = jHipsterProperties.getApiDocs();
+    public MariasoftSpringDocGroupsConfiguration(MariasoftProperies mariasoftProperies) {
+        properties = mariasoftProperies.getApiDocs();
     }
 
     /**

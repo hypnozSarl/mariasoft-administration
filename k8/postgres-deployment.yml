@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres
+          env:
+            - name: POSTGRES_USER
+              value: "hypnoz"
+            - name: POSTGRES_PASSWORD
+              value: "Supercreator5."
+            - name: POSTGRES_DB
+              value: "mariasoftdb"
+            - name: PGDATA
+              value: "/data/postgres"
+            - name: POSTGRES_INITDB_ARGS
+              value: "--encoding=UTF8"
+          args:
+            - postgres
+            - -c
+            - shared_buffers=256MB
+            - -c
+            - max_connections=200
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - mountPath: /data/postgres
+              name: postgres-data
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-pvc

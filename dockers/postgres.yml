@@ -1,0 +1,21 @@
+version: '3.1'
+
+services:
+  mariasoftadmindb:
+    container_name: mariasoftadmindb
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: hypnoz
+      POSTGRES_PASSWORD: Supercreator5.
+      POSTGRES_DB: mariasoftadmin_db
+      PGDATA: /data/postgres
+      POSTGRES_INITDB_ARGS: '--encoding=UTF8'
+    volumes:
+      - postgres_data:/data/postgres
+    ports:
+      - "5432:5432"
+    command: postgres -c 'shared_buffers=256MB' -c 'max_connections=200'
+
+volumes:
+  postgres_data:

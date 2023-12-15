@@ -1,6 +1,8 @@
 package net.hypnoz.msadmin.config;
 
 import com.github.benmanes.caffeine.jcache.configuration.CaffeineConfiguration;
+import net.hypnoz.msadmin.utils.MariasoftProperies;
+import net.hypnoz.msadmin.utils.PrefixedKeyGenerator;
 import org.hibernate.cache.jcache.ConfigSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
@@ -41,7 +43,7 @@ public class CacheConfiguration {
         return cm -> {
            // createCache(cm, net.mariasoft.administrations.repository.UserRepository.USERS_BY_LOGIN_CACHE);
            // createCache(cm, net.mariasoft.administrations.repository.UserRepository.USERS_BY_EMAIL_CACHE);
-            createCache(cm, net.mariasoft.administrations.domain.Structures.class.getName());
+            createCache(cm, net.hypnoz.msadmin.domain.Structures.class.getName());
            // createCache(cm, net.mariasoft.administrations.Authority.class.getName());
            // createCache(cm, net.mariasoft.administrations.User.class.getName() + ".authorities");
             // jhipster-needle-caffeine-add-entry
