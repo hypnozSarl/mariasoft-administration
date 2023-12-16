@@ -7,4 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 class MariasoftAdministrationApplicationTests {
 
 
+  
+    void contextLoads() {
+    }
+
+
 }
