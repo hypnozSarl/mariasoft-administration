@@ -16,7 +16,7 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/mariassofttest
+    url: jdbc:postgresql://host.docker.internal:5432/mariassofttest
     username: hypnoz
     password: Supercreator5.
     hikari:
