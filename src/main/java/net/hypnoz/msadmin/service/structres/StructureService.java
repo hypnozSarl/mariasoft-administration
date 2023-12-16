@@ -63,7 +63,7 @@ public class StructureService implements IStructureService {
         Structures existingStructure = structuresRepository.findById(structuresDto.getId())
                 .orElseThrow(() -> {
                     log.error(STRUCTURE_NOT_FOUND_MSG, structuresDto.getId());
-                    throw new IllegalArgumentException("Structure with given id not found");
+                    return new IllegalArgumentException(STRUCTURE_NOT_FOUND_MSG);
                 });
         existingStructure = structuresMapper.partialUpdate(structuresDto, existingStructure);
         existingStructure = structuresRepository.saveAndFlush(existingStructure);
@@ -78,7 +78,7 @@ public class StructureService implements IStructureService {
         Structures existingStructure = structuresRepository.findById(sid)
                 .orElseThrow(() -> {
                     log.error(STRUCTURE_NOT_FOUND_MSG, sid);
-                    throw new IllegalArgumentException("Structure with given id not found");
+                    throw new IllegalArgumentException(STRUCTURE_NOT_FOUND_MSG);
                 });
         structuresRepository.delete(existingStructure);
 
@@ -106,7 +106,7 @@ public class StructureService implements IStructureService {
     public void uploadStructureLogo(StructuresDto structuresDto, MultipartFile file) {
         log.debug(ATTEMPT_UPLOAD_LOGO_MSG, structuresDto.getId());
 
-        Structures existingStructure = validateStructureExists(structuresDto.getId());
+            validateStructureExists(structuresDto.getId());
 
         Path logoPath = prepareLogoPath(file,structuresDto.getId());
 
@@ -116,7 +116,7 @@ public class StructureService implements IStructureService {
             saveLogo(logoPath, file);
 
         } catch (IOException e) {
-            log.error("Error while uploading logo for structure ID: {}", structuresDto.getId(), e);
+            log.error(UPLOAD_LOGO_ERROR_MSG, structuresDto.getId(), e);
             throw new RuntimeException("Could not upload logo for structure ID: " + structuresDto.getId(), e);
         }
     }
