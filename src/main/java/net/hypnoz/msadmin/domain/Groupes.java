@@ -1,6 +1,8 @@
 package net.hypnoz.msadmin.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.annotations.SQLDelete;
@@ -22,11 +24,14 @@ public class Groupes extends AbstractAuditingEntity<Long> implements Serializabl
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String grpCode;
+    @NotNull
+    @NotEmpty
+    @Column(unique = true, length = 10)
+    private String grp_code;
     private String grpLibelle;
 
+    @NotNull
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "structures_id")
+    @ManyToOne(cascade = {CascadeType.ALL})
     private Structures structures;
 }

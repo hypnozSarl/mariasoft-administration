@@ -5,7 +5,7 @@ import net.hypnoz.msadmin.dtos.GroupesDto;
 import java.util.List;
 
 public interface IGroupeService {
-    GroupesDto createGroupe(GroupesDto groupesDto) throws Exception;
+    GroupesDto createGroupe(GroupesDto groupesDto);
 
     GroupesDto getGroupeById(Long id);
 

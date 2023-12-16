@@ -1,11 +1,13 @@
 package net.hypnoz.msadmin.service.structres;
 
 
+import jakarta.validation.*;
 import net.hypnoz.msadmin.domain.Structures;
 import net.hypnoz.msadmin.dtos.StructuresDto;
 import net.hypnoz.msadmin.mappers.StructuresMapper;
 import net.hypnoz.msadmin.repository.StructuresRepository;
 import net.hypnoz.msadmin.utils.OsUtils;
+import net.hypnoz.msadmin.utils.validators.ValidationCommunUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,23 +20,26 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 public class StructureService implements IStructureService {
+    private final Logger log = LoggerFactory.getLogger(StructureService.class);
 
     private final StructuresRepository structuresRepository;
-    private final Logger log = LoggerFactory.getLogger(StructureService.class);
     private final StructuresMapper structuresMapper;
 
     public StructureService(StructuresRepository structuresRepository, StructuresMapper structuresMapper) {
         this.structuresRepository = structuresRepository;
-        this.structuresMapper = structuresMapper;
+        this.structuresMapper = structuresMapper;;
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public StructuresDto creationStructure(StructuresDto structuresDto) {
+        ValidationCommunUtils.validate(structuresDto);
         log.debug("Attempting to create Structure with info: {}", structuresDto);
         var structures = structuresMapper.toEntity(structuresDto);
         structures = structuresRepository.saveAndFlush(structures);
@@ -46,6 +51,7 @@ public class StructureService implements IStructureService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public StructuresDto updateStructure(StructuresDto structuresDto) {
         log.debug("Attempting to update Structure with info: {}", structuresDto);
+        ValidationCommunUtils.validate(structuresDto);
         Structures existingStructure = structuresRepository.findById(structuresDto.getId())
                 .orElseThrow(() -> {
                     log.error("Failed to find Structure id: {}", structuresDto.getId());
@@ -134,7 +140,7 @@ public class StructureService implements IStructureService {
         }
     }
 
-    private void deleteExistingLogo(Path logoPath) throws IOException {
+    public void deleteExistingLogo(Path logoPath) throws IOException {
         if (Files.exists(logoPath)) {
             Files.delete(logoPath);
             log.debug("Previous logo has been deleted");

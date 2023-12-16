@@ -4,6 +4,7 @@ import net.hypnoz.msadmin.domain.Groupes;
 import net.hypnoz.msadmin.dtos.GroupesDto;
 import net.hypnoz.msadmin.mappers.GroupesMapper;
 import net.hypnoz.msadmin.repository.GroupesRepository;
+import net.hypnoz.msadmin.utils.validators.ValidationCommunUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,9 @@ public class GroupeService implements IGroupeService {
 
 
     @Override
-    public GroupesDto createGroupe(GroupesDto groupesDto) throws Exception {
+    public GroupesDto createGroupe(GroupesDto groupesDto) {
         log.debug("Request to create a group: {}", groupesDto);
+        ValidationCommunUtils.validate(groupesDto);
         Groupes groupes = groupesMapper.toEntity(groupesDto);
         Groupes addedGroup = groupesRepository.save(groupes);
         log.debug("Group created: {}", addedGroup);
@@ -47,6 +49,7 @@ public class GroupeService implements IGroupeService {
     @Override
     public GroupesDto updateGroupe(GroupesDto groupesDto) {
         log.debug("Request to update group: {}", groupesDto);
+        ValidationCommunUtils.validate(groupesDto);
         Groupes existingGroup = groupesRepository.findById(groupesDto.getId())
                 .orElseThrow(() -> {
                     log.error("Unable to find group with id: {}", groupesDto.getId());
