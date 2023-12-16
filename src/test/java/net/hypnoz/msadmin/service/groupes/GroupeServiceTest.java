@@ -8,11 +8,16 @@ import net.hypnoz.msadmin.mappers.GroupesMapper;
 import net.hypnoz.msadmin.repository.GroupesRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,46 +56,24 @@ public class GroupeServiceTest {
         assertThrows(ConstraintViolationException.class,
                 () -> groupeService.createGroupe(groupesDto));
     }
-    @Test
-    void shouldThrowExceptionWhenGrpCodeIsNull() {
+    @ParameterizedTest
+    @MethodSource("dataForGroupeServiceTest")
+    void shouldThrowExceptionForInvalidGroup(String grpCode, StructuresDto structures, Class<? extends Exception> exceptionType) {
         GroupesDto groupesDto = new GroupesDto();
-        groupesDto.setGrpCode(null);
+        groupesDto.setGrpCode(grpCode);
         groupesDto.setGrpLibelle("Valid Group Label");
-        groupesDto.setStructures(new StructuresDto());
+        groupesDto.setStructures(structures);
 
-        assertThrows(ConstraintViolationException.class,
-                () -> groupeService.createGroupe(groupesDto));
-    }
-    @Test
-    void shouldThrowExceptionWhenStructuresIsNull() {
-        GroupesDto groupesDto = new GroupesDto();
-        groupesDto.setGrpCode("Code");
-        groupesDto.setGrpLibelle("Valid Group Label");
-        groupesDto.setStructures(null);
-
-        assertThrows(ConstraintViolationException.class,
-                () -> groupeService.createGroupe(groupesDto));
+        assertThrows(exceptionType, () -> groupeService.createGroupe(groupesDto));
     }
 
-    @Test
-    void shouldThrowExceptionWhenGrpCodeIsEmpty() {
-        GroupesDto groupesDto = new GroupesDto();
-        groupesDto.setGrpCode(""); // Empty string
-        groupesDto.setGrpLibelle("Valid Group Label");
-        groupesDto.setStructures(new StructuresDto());
-
-        assertThrows(ConstraintViolationException.class,
-                () -> groupeService.createGroupe(groupesDto));
-    }
-    @Test
-    void shouldThrowExceptionWhenGrpCodeExceedsMaxLength() {
-        GroupesDto groupesDto = new GroupesDto();
-        groupesDto.setGrpCode("123456789AB"); // 11 characters
-        groupesDto.setGrpLibelle("Valid Group Label");
-        groupesDto.setStructures(new StructuresDto());
-
-        assertThrows(ConstraintViolationException.class,
-                () -> groupeService.createGroupe(groupesDto));
+    static Stream<Arguments> dataForGroupeServiceTest(){
+        return Stream.of(
+                Arguments.of(null, new StructuresDto(), ConstraintViolationException.class),
+                Arguments.of("Code", null, ConstraintViolationException.class),
+                Arguments.of("", new StructuresDto(), ConstraintViolationException.class),
+                Arguments.of("123456789AB", new StructuresDto(), ConstraintViolationException.class)
+        );
     }
     @Test
     void shouldCreateGroupeWhenGrpLibelleIsNull() {

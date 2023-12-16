@@ -46,16 +46,16 @@ public abstract class AbstractAuditingEntity<T> implements Serializable {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private Etats flag_etat;
+    private Etats flagEtat;
     @PrePersist
     public void beforePersist() {
 
-        this.flag_etat = Etats.ACTIVE;
+        this.flagEtat = Etats.ACTIVE;
     }
 
     @PreRemove
     public void beforeDelete() {
-        this.flag_etat = Etats.DELETED;
+        this.flagEtat = Etats.DELETED;
     }
 
 

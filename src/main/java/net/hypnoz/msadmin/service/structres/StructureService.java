@@ -33,7 +33,7 @@ public class StructureService implements IStructureService {
 
     public StructureService(StructuresRepository structuresRepository, StructuresMapper structuresMapper) {
         this.structuresRepository = structuresRepository;
-        this.structuresMapper = structuresMapper;;
+        this.structuresMapper = structuresMapper;
     }
 
     @Override

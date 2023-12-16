@@ -28,15 +28,15 @@ public class Users extends AbstractAuditingEntity<Long> implements Serializable 
     @Column(name = "usr_civilite")
     private String usrCivilite;
 
-    @Column(name = "usr_nom")
+    @Column(name = "usr_nom", length = 100)
     private String usrNom;
 
-    @Column(name = "usr_prenom")
+    @Column(name = "usr_prenom", length = 50)
     private String usrPrenom;
     @Column(name = "usr_patronyme")
     private String usrPatronyme;
 
-    @Column(name = "usr_initiale")
+    @Column(name = "usr_initiale", length = 10)
     private String usrInitiale;
 
     @Column(name = "usr_photo")

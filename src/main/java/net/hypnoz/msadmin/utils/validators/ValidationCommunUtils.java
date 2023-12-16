@@ -11,8 +11,7 @@ public class ValidationCommunUtils {
     private static final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     private static final Validator validator = factory.getValidator();
 
-    private void ValidationUtils() {
-
+    private  ValidationCommunUtils() {
     }
 
     public static <T> void validate(T obj) {

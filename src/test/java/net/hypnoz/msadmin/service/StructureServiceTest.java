@@ -9,6 +9,9 @@ import net.hypnoz.msadmin.repository.StructuresRepository;
 import net.hypnoz.msadmin.service.structres.StructureService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -64,7 +68,7 @@ void shouldSuccessCreatingStructureWhenRaisonSocialeIsNull() {
         });
     }
     @Test
-    public void shouldThrowExceptionWhenCreatingStructureWithNullRaisonSociale() {
+     void shouldThrowExceptionWhenCreatingStructureWithNullRaisonSociale() {
         StructuresDto structuresDto = new StructuresDto();
         structuresDto.setStrRaisonSociale(null);
         structuresDto.setStrSigle("Sigle");
@@ -73,7 +77,7 @@ void shouldSuccessCreatingStructureWhenRaisonSocialeIsNull() {
                 () -> structureService.creationStructure(structuresDto));
     }
     @Test
-    public void shouldThrowExceptionWhenCreatingStructureWithShortSigle() {
+     void shouldThrowExceptionWhenCreatingStructureWithShortSigle() {
         StructuresDto structuresDto = new StructuresDto();
         structuresDto.setStrRaisonSociale("Raison Sociale");
         structuresDto.setStrSigle("S");
@@ -82,7 +86,7 @@ void shouldSuccessCreatingStructureWhenRaisonSocialeIsNull() {
                 () -> structureService.creationStructure(structuresDto));
     }
     @Test
-    public void shouldThrowExceptionWhenCreatingStructureWithLongSigle() {
+     void shouldThrowExceptionWhenCreatingStructureWithLongSigle() {
         StructuresDto structuresDto = new StructuresDto();
         structuresDto.setStrRaisonSociale("Raison Sociale");
         structuresDto.setStrSigle("S".repeat(51)); // a Sigle of 51 characters
@@ -91,7 +95,7 @@ void shouldSuccessCreatingStructureWhenRaisonSocialeIsNull() {
                 () -> structureService.creationStructure(structuresDto));
     }
     @Test
-    public void shouldThrowExceptionWhenCreatingStructureWithLongRaisonSocial() {
+     void shouldThrowExceptionWhenCreatingStructureWithLongRaisonSocial() {
         StructuresDto structuresDto = new StructuresDto();
         structuresDto.setStrRaisonSociale("Raison Sociale".repeat(200));
         structuresDto.setStrSigle("SIGLE"); // a Sigle of 51 characters
@@ -117,33 +121,23 @@ void shouldSuccessCreatingStructureWhenRaisonSocialeIsNull() {
         assertEquals(structuresDto.getStrRaisonSociale(), result.getStrRaisonSociale());
         assertEquals(structuresDto.getStrSigle(), result.getStrSigle());
     }
-    @Test
-    void shouldThrowExceptionWhenUpdatingStructureWithNullRaisonSociale() {
+    @ParameterizedTest
+    @MethodSource("provideInvalidVotesForTest")
+    void shouldThrowExceptionWhenStructureHasInvalidValues(String strRaisonSociale, String strSigle) {
         StructuresDto structuresDto = new StructuresDto();
-        structuresDto.setStrRaisonSociale(null);
-        structuresDto.setStrSigle("Valid Sigle");
+        structuresDto.setStrRaisonSociale(strRaisonSociale);
+        structuresDto.setStrSigle(strSigle);
 
         assertThrows(ConstraintViolationException.class,
                 () -> structureService.updateStructure(structuresDto));
     }
-    @Test
-    void shouldThrowExceptionWhenUpdatingStructureWithNullSigle() {
-        StructuresDto structuresDto = new StructuresDto();
-        structuresDto.setStrRaisonSociale("Valid Raison Sociale");
-        structuresDto.setStrSigle(null);
 
-        assertThrows(ConstraintViolationException.class,
-                () -> structureService.updateStructure(structuresDto));
-    }
-    @Test
-    void shouldThrowExceptionWhenUpdatingStructureWithInvalidSigleLength() {
-        StructuresDto structuresDto = new StructuresDto();
-        structuresDto.setStrRaisonSociale("Valid Raison Sociale");
-        structuresDto.setStrSigle("S"); // S doesn't meet minimum length of 2
-
-        assertThrows(ConstraintViolationException.class,
-                () -> structureService.updateStructure(structuresDto));
-
+    private static Stream<Arguments> provideInvalidVotesForTest() {
+        return Stream.of(
+                Arguments.of(null, "Valid Sigle"),
+                Arguments.of("Valid Raison Sociale", null),
+                Arguments.of("Valid Raison Sociale", "S")
+        );
     }
     @Test
     void shouldThrowExceptionWhenCreatingStructureWithNonUniqueRaisonSociale() {
@@ -208,7 +202,7 @@ void shouldSuccessCreatingStructureWhenRaisonSocialeIsNull() {
                 () -> structureService.updateStructure(structuresDto));
     }
     @Test
-    public void shouldDeleteStructureWhenExists() {
+     void shouldDeleteStructureWhenExists() {
         Long existingId = 1L;
 
         when(structuresRepository.findById(any())).thenReturn(Optional.of(new Structures()));
@@ -218,7 +212,7 @@ void shouldSuccessCreatingStructureWhenRaisonSocialeIsNull() {
         verify(structuresRepository, times(1)).delete(any(Structures.class));
     }
     @Test
-    public void shouldThrowExceptionWhenDeletingNonExistingStructure() {
+     void shouldThrowExceptionWhenDeletingNonExistingStructure() {
         Long nonExistentId = 1L;
 
         when(structuresRepository.findById(any())).thenReturn(Optional.empty());
@@ -229,7 +223,7 @@ void shouldSuccessCreatingStructureWhenRaisonSocialeIsNull() {
         verify(structuresRepository, times(0)).delete(any(Structures.class));
     }
     @Test
-    public void shouldReturnStructureWhenExists() {
+     void shouldReturnStructureWhenExists() {
         Long existingId = 1L;
         StructuresDto expectedStructuresDto = new StructuresDto();
         expectedStructuresDto.setId(existingId);
@@ -243,7 +237,7 @@ void shouldSuccessCreatingStructureWhenRaisonSocialeIsNull() {
         assertEquals(existingId, result.getId());
     }
     @Test
-    public void shouldThrowExceptionWhenStructureDoesNotExist() {
+     void shouldThrowExceptionWhenStructureDoesNotExist() {
         Long nonExistentId = 1L;
         when(structuresRepository.findById(any())).thenReturn(Optional.empty());
 
@@ -251,7 +245,7 @@ void shouldSuccessCreatingStructureWhenRaisonSocialeIsNull() {
                 () -> structureService.getStructure(nonExistentId));
     }
     @Test
-    public void shouldUploadLogoWhenStructureExistsAndFileIsValid() throws IOException {
+     void shouldUploadLogoWhenStructureExistsAndFileIsValid() throws IOException {
         Long existingId = 1L;
         StructuresDto structuresDto = new StructuresDto();
         structuresDto.setId(existingId);
@@ -263,7 +257,7 @@ void shouldSuccessCreatingStructureWhenRaisonSocialeIsNull() {
         assertDoesNotThrow(() -> structureService.uploadStructureLogo(structuresDto, file));
     }
     @Test
-    public void shouldThrowExceptionWhenUploadingLogoAndStructureDoesNotExist() {
+     void shouldThrowExceptionWhenUploadingLogoAndStructureDoesNotExist() {
         Long nonExistentId = 1L;
         StructuresDto structuresDto = new StructuresDto();
         structuresDto.setId(nonExistentId);
