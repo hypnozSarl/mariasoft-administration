@@ -1,12 +1,13 @@
 package net.hypnoz.msadmin.utils;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.info.GitProperties;
 import org.springframework.cache.interceptor.KeyGenerator;
 
 import java.lang.reflect.Method;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -43,10 +44,11 @@ public class PrefixedKeyGenerator implements KeyGenerator {
             time = buildProperties.getTime();
             version = buildProperties.getVersion();
         }
-        Object p = ObjectUtils.firstNonNull(shortCommitId, time, version, RandomStringUtils.randomAlphanumeric(12));
-
-        if (p instanceof Instant) {
-            return DateTimeFormatter.ISO_INSTANT.format((Instant) p);
+        SecureRandom secureRandom = new SecureRandom();
+        String secureRandomAlphanumeric = new BigInteger(70, secureRandom).toString(32);
+        Object p = ObjectUtils.firstNonNull(shortCommitId, time, version, secureRandomAlphanumeric);
+        if (p instanceof Instant instant) {
+            return DateTimeFormatter.ISO_INSTANT.format(instant);
         }
         return p.toString();
     }

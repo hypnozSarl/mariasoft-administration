@@ -7,7 +7,7 @@ import net.hypnoz.msadmin.dtos.UsersDto;
 import java.util.List;
 
 public interface IUsersServices {
-    UsersDto createUsers(UsersDto usersDto) throws Exception;
+    UsersDto createUsers(UsersDto usersDto);
 
     UsersDto getUsersById(Long id);
 

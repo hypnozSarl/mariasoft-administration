@@ -1,11 +1,11 @@
 package net.hypnoz.msadmin.service.structres;
 
-
 import net.hypnoz.msadmin.domain.Structures;
 import net.hypnoz.msadmin.dtos.StructuresDto;
 import net.hypnoz.msadmin.mappers.StructuresMapper;
 import net.hypnoz.msadmin.repository.StructuresRepository;
 import net.hypnoz.msadmin.utils.OsUtils;
+import net.hypnoz.msadmin.utils.validators.ValidationCommunUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -23,9 +23,21 @@ import java.util.Objects;
 @Service
 public class StructureService implements IStructureService {
 
-    private final StructuresRepository structuresRepository;
     private final Logger log = LoggerFactory.getLogger(StructureService.class);
+
+    private final StructuresRepository structuresRepository;
     private final StructuresMapper structuresMapper;
+
+    // Constants for log messages
+    private static final String STRUCTURE_NOT_FOUND_MSG = "Failed to find Structure id: {}";
+    private static final String ATTEMPT_UPDATE_MSG = "Attempting to update Structure with info: {}";
+    private static final String ATTEMPT_CREATE_MSG = "Attempting to create Structure with info: {}";
+    private static final String ATTEMPT_DELETE_MSG = "Attempting to delete Structure with info: {}";
+    private static final String ATTEMPT_GET_MSG = "Attempting to get Structure by id: {}";
+    private static final String ATTEMPT_UPLOAD_LOGO_MSG = "Attempting to upload a logo for structure ID: {}";
+    private static final String UPLOAD_LOGO_ERROR_MSG = "Error while uploading logo for structure ID: {}";
+    private static final String DIR_CREATED_MSG = "Directory 'structures-logo' didn't exist and was created";
+    private static final String LOGO_DELETION_MSG = "Previous logo has been deleted";
 
     public StructureService(StructuresRepository structuresRepository, StructuresMapper structuresMapper) {
         this.structuresRepository = structuresRepository;
@@ -35,51 +47,53 @@ public class StructureService implements IStructureService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public StructuresDto creationStructure(StructuresDto structuresDto) {
-        log.debug("Attempting to create Structure with info: {}", structuresDto);
+        ValidationCommunUtils.validate(structuresDto);
+        log.debug(ATTEMPT_CREATE_MSG, structuresDto);
         var structures = structuresMapper.toEntity(structuresDto);
         structures = structuresRepository.saveAndFlush(structures);
-        log.debug("Structure created successfully with info: {}", structuresDto);
+
         return structuresMapper.toDto(structures);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public StructuresDto updateStructure(StructuresDto structuresDto) {
-        log.debug("Attempting to update Structure with info: {}", structuresDto);
+        log.debug(ATTEMPT_UPDATE_MSG, structuresDto);
+        ValidationCommunUtils.validate(structuresDto);
         Structures existingStructure = structuresRepository.findById(structuresDto.getId())
                 .orElseThrow(() -> {
-                    log.error("Failed to find Structure id: {}", structuresDto.getId());
-                    throw new IllegalArgumentException("Structure with given id not found");
+                    log.error(STRUCTURE_NOT_FOUND_MSG, structuresDto.getId());
+                    return new IllegalArgumentException(STRUCTURE_NOT_FOUND_MSG);
                 });
         existingStructure = structuresMapper.partialUpdate(structuresDto, existingStructure);
         existingStructure = structuresRepository.saveAndFlush(existingStructure);
-        log.debug("Structure updated successfully with info: {}", structuresDto);
+
         return structuresMapper.toDto(existingStructure);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void deleteStructure(Long sid) {
-        log.debug("Attempting to delete Structure with info: {}", sid);
+        log.debug(ATTEMPT_DELETE_MSG, sid);
         Structures existingStructure = structuresRepository.findById(sid)
                 .orElseThrow(() -> {
-                    log.error("Failed to find Structure id: {}", sid);
-                    throw new IllegalArgumentException("Structure with given id not found");
+                    log.error(STRUCTURE_NOT_FOUND_MSG, sid);
+                    throw new IllegalArgumentException(STRUCTURE_NOT_FOUND_MSG);
                 });
         structuresRepository.delete(existingStructure);
-        log.debug("Structure deleted with info: {}", existingStructure);
+
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class, readOnly = true)
     public StructuresDto getStructure(Long sid) {
-        log.debug("Attempting to get Structure by id: {}", sid);
+        log.debug(ATTEMPT_GET_MSG, sid);
         Structures structures = structuresRepository.findById(sid)
                 .orElseThrow(() -> {
-                    log.error("Failed to find Structure id: {}", sid);
+                    log.error(STRUCTURE_NOT_FOUND_MSG, sid);
                     return new IllegalArgumentException("Structure with given id not found");
                 });
-        log.debug("Structure found by id: {}", sid);
+
         return structuresMapper.toDto(structures);
     }
 
@@ -90,9 +104,9 @@ public class StructureService implements IStructureService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void uploadStructureLogo(StructuresDto structuresDto, MultipartFile file) {
-        log.debug("Attempting to upload a logo for structure ID: {}", structuresDto.getId());
+        log.debug(ATTEMPT_UPLOAD_LOGO_MSG, structuresDto.getId());
 
-        Structures existingStructure = validateStructureExists(structuresDto.getId());
+            validateStructureExists(structuresDto.getId());
 
         Path logoPath = prepareLogoPath(file,structuresDto.getId());
 
@@ -101,9 +115,8 @@ public class StructureService implements IStructureService {
 
             saveLogo(logoPath, file);
 
-            log.debug("Logo uploaded successfully for structure ID: {}", structuresDto.getId());
         } catch (IOException e) {
-            log.error("Error while uploading logo for structure ID: {}", structuresDto.getId(), e);
+            log.error(UPLOAD_LOGO_ERROR_MSG, structuresDto.getId(), e);
             throw new RuntimeException("Could not upload logo for structure ID: " + structuresDto.getId(), e);
         }
     }
@@ -111,7 +124,7 @@ public class StructureService implements IStructureService {
     private Structures validateStructureExists(Long id) {
         return structuresRepository.findById(id)
                 .orElseThrow(() -> {
-                    log.error("Failed to find Structure id: {}", id);
+                    log.error(STRUCTURE_NOT_FOUND_MSG, id);
                     return new IllegalArgumentException("Structure with given id not found");
                 });
     }
@@ -127,23 +140,21 @@ public class StructureService implements IStructureService {
     private void createLogoDirectory(Path dir) {
         try {
             Files.createDirectories(dir);
-            log.debug("Directory 'structures-logo' didn't exist and was created");
+            log.debug(DIR_CREATED_MSG);
         } catch (IOException e) {
             log.error("Error while creating 'structures-logo' directory", e);
             throw new RuntimeException("Could not create directory for the logos", e);
         }
     }
 
-    private void deleteExistingLogo(Path logoPath) throws IOException {
+    public void deleteExistingLogo(Path logoPath) throws IOException {
         if (Files.exists(logoPath)) {
             Files.delete(logoPath);
-            log.debug("Previous logo has been deleted");
+            log.debug(LOGO_DELETION_MSG);
         }
     }
 
     private void saveLogo(Path logoPath, MultipartFile file) throws IOException {
         Files.copy(file.getInputStream(), logoPath);
     }
-
-
 }

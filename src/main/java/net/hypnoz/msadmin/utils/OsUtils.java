@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Optional;
 
 public class OsUtils {
+    private OsUtils() {
+    }
+
     private static OSType cachedOsType;
     private static String cachedHomeDir;
 
@@ -41,7 +44,7 @@ public class OsUtils {
     }
 
     public static String getOsPath(String p) {
-        return p.replaceAll("\\\\", "/").replaceAll("(?<=.)/?$", "/");
+        return p.replace("\\\\", "/").replaceAll("(?<=.)/?$", "/");
     }
 
     public static String getTempDir() {
