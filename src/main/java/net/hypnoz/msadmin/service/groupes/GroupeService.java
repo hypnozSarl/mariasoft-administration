@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -77,7 +76,7 @@ public class GroupeService implements IGroupeService {
     public List<GroupesDto> getAllGroupeByStructure(Long sid) {
         List<GroupesDto> groupes = groupesRepository.findByStructures_Id(sid).stream()
                 .map(groupesMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
         log.debug("Fetched all groups with structure id: {}", sid);
         return groupes;
     }

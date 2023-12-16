@@ -9,7 +9,7 @@ import java.util.Arrays;
 public class PrefixedSimpleKey implements Serializable {
 
     private final String prefix;
-    private final Object[] params;
+    private final Serializable[] params;
     private final String methodName;
     private int hashCode;
 
@@ -25,7 +25,7 @@ public class PrefixedSimpleKey implements Serializable {
         Assert.notNull(elements, "Elements must not be null");
         this.prefix = prefix;
         this.methodName = methodName;
-        params = new Object[elements.length];
+        params = new Serializable[elements.length];
         System.arraycopy(elements, 0, params, 0, elements.length);
         hashCode = prefix.hashCode();
         hashCode = 31 * hashCode + methodName.hashCode();
@@ -36,9 +36,10 @@ public class PrefixedSimpleKey implements Serializable {
     @Override
     public boolean equals(Object other) {
         return (this == other ||
-                (other instanceof PrefixedSimpleKey && prefix.equals(((PrefixedSimpleKey) other).prefix) &&
-                        methodName.equals(((PrefixedSimpleKey) other).methodName) &&
-                        Arrays.deepEquals(params, ((PrefixedSimpleKey) other).params)));
+                (other instanceof PrefixedSimpleKey otherAsPrefixedSimpleKey &&
+                        prefix.equals(otherAsPrefixedSimpleKey.prefix) &&
+                        methodName.equals(otherAsPrefixedSimpleKey.methodName) &&
+                        Arrays.deepEquals(params, otherAsPrefixedSimpleKey.params)));
     }
 
     /** {@inheritDoc} */

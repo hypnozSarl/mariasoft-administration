@@ -1,11 +1,16 @@
 package net.hypnoz.msadmin.web.rest.errors;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.ProblemDetail;
 
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-
+@Setter
+@Getter
+@EqualsAndHashCode(callSuper = true)
 public class ProblemDetailWithCause  extends ProblemDetail {
     private ProblemDetailWithCause cause;
 
@@ -15,14 +20,6 @@ public class ProblemDetailWithCause  extends ProblemDetail {
 
     ProblemDetailWithCause(int rawStatus, ProblemDetailWithCause cause) {
         super(rawStatus);
-        this.cause = cause;
-    }
-
-    public ProblemDetailWithCause getCause() {
-        return cause;
-    }
-
-    public void setCause(ProblemDetailWithCause cause) {
         this.cause = cause;
     }
 
@@ -83,14 +80,14 @@ public class ProblemDetailWithCause  extends ProblemDetail {
         }
 
         public ProblemDetailWithCause build() {
-            ProblemDetailWithCause cause = new ProblemDetailWithCause(this.status);
-            cause.setType(this.type);
-            cause.setTitle(this.title);
-            cause.setDetail(this.detail);
-            cause.setInstance(this.instance);
-            this.properties.forEach(cause::setProperty);
-            cause.setCause(this.cause);
-            return cause;
+            ProblemDetailWithCause detailWithCause = new ProblemDetailWithCause(this.status);
+            detailWithCause.setType(this.type);
+            detailWithCause.setTitle(this.title);
+            detailWithCause.setDetail(this.detail);
+            detailWithCause.setInstance(this.instance);
+            this.properties.forEach(detailWithCause::setProperty);
+            detailWithCause.setCause(this.cause);
+            return detailWithCause;
         }
     }
 }

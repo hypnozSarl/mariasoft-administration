@@ -41,12 +41,8 @@ public class CacheConfiguration {
     @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer() {
         return cm -> {
-           // createCache(cm, net.mariasoft.administrations.repository.UserRepository.USERS_BY_LOGIN_CACHE);
-           // createCache(cm, net.mariasoft.administrations.repository.UserRepository.USERS_BY_EMAIL_CACHE);
             createCache(cm, net.hypnoz.msadmin.domain.Structures.class.getName());
-           // createCache(cm, net.mariasoft.administrations.Authority.class.getName());
-           // createCache(cm, net.mariasoft.administrations.User.class.getName() + ".authorities");
-            // jhipster-needle-caffeine-add-entry
+            createCache(cm, net.hypnoz.msadmin.domain.Groupes.class.getName());
         };
     }
 

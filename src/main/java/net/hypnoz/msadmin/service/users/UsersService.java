@@ -21,15 +21,11 @@ public class UsersService implements IUsersServices{
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public UsersDto createUsers(UsersDto usersDto) throws Exception {
-        try {
+    public UsersDto createUsers(UsersDto usersDto) {
             Users userEntity = usersMapper.toEntity(usersDto);
             userEntity.setUsrPatronyme(usersDto.getUsrNom() + " " + usersDto.getUsrPrenom());
             Users savedUser = usersRepository.save(userEntity);
             return usersMapper.toDto(savedUser);
-        } catch (Exception e) {
-            throw new Exception("Failed to create user. Rolling back transaction.", e);
-        }
     }
 
     /**

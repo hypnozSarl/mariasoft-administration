@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface GroupesRepository extends JpaRepository<Groupes, Long> {
+
     List<Groupes> findByStructures_Id(Long id);
 }

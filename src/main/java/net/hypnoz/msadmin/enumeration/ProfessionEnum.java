@@ -110,7 +110,7 @@ public enum ProfessionEnum {
     CHEF_DE_COMPTOIR("Chef de comptoir"),
     CHEF_DE_FABRICATION("Chef de fabrication"),
     CHEF_DE_PRODUITS_VOYAGES("Chef de produits voyages"),
-    CHEF_DE_PROJET__PROJECT_MANAGER("Chef De Projet - Project Manager"),
+    CHEF_DE_PROJET_PROJECT_MANAGER("Chef De Projet - Project Manager"),
     CHEF_DE_PROJET_INFORMATIQUE("Chef de projet informatique"),
     CHEF_DE_PROJET_MULTIMEDIA("Chef de projet multimedia"),
     CHEF_DE_PUBLICIT("Chef de publicité"),
@@ -137,8 +137,8 @@ public enum ProfessionEnum {
     CONDUCTEUR_DAUTOBUS("Conducteur d'autobus"),
     CONDUCTEUR_DAUTOMOBILE("Conducteur d'automobile"),
     CONDUCTEUR_DENGINS_EN_BTP("Conducteur d'engins en BTP"),
-    CONDUCTEUR_DE_MACHINE__IMPRIMER_DEXPLOITATION_COMPLEXE("Conducteur de machine à imprimer d'exploitation complexe"),
-    CONDUCTEUR_DE_MACHINE__IMPRIMER_SIMPLE("Conducteur de machine à imprimer simple"),
+    CONDUCTEUR_DE_MACHINE_IMPRIMER_DEXPLOITATION_COMPLEXE("Conducteur de machine à imprimer d'exploitation complexe"),
+    CONDUCTEUR_DE_MACHINE_IMPRIMER_SIMPLE("Conducteur de machine à imprimer simple"),
     CONDUCTEUR_DE_MACHINES("Conducteur de machines"),
     CONDUCTEUR_DE_MACHINES_AGRO("Conducteur de machines agro"),
     CONDUCTEUR_DE_STATION_DPURATION("Conducteur de station d'épuration"),
@@ -146,7 +146,7 @@ public enum ProfessionEnum {
     CONDUCTEUR_DE_TRAIN("conducteur de train"),
     CONDUCTEUR_DE_TRAVAUX("Conducteur de travaux"),
     CONDUCTEUR_ROUTIER("Conducteur routier"),
-    CONSEIL_EN_ASSISTANCE__MAITRISE_DOUVRAGE("Conseil En Assistance À Maitrise D'Ouvrage"),
+    CONSEIL_EN_ASSISTANCE_MAITRISE_DOUVRAGE("Conseil En Assistance À Maitrise D'Ouvrage"),
     CONSEILLER_DINSERTION_ET_DE_PROBATION("Conseiller d'insertion et de probation"),
     CONSEILLER_DORIENTATION("Conseiller d'orientation"),
     CONSEILLER_DORIENTATIONPSYCHOLOGUE("Conseiller d'orientation-psychologue"),
@@ -157,7 +157,7 @@ public enum ProfessionEnum {
     CONSEILLERS_PRINCIPAUX_DDUCATION("Conseillers principaux d'éducation"),
     CONSERVATEUR_DE_BIBLIOTHQUE("Conservateur de bibliothèque"),
     CONSERVATEUR_DU_PATRIMOINE("Conservateur du patrimoine"),
-    CONSULTANT_COMMUNICATION__RSEAUX("Consultant Communication & Réseaux"),
+    CONSULTANT_COMMUNICATION_RSEAUX("Consultant Communication & Réseaux"),
     CONSULTANT_EBUSINESS("Consultant E-Business"),
     CONSULTANT_EN_CONDUITE_DU_CHANGEMENT("Consultant En Conduite Du Changement"),
     CONSULTANT_EN_ELEARNING("Consultant En E-Learning"),
@@ -506,7 +506,7 @@ public enum ProfessionEnum {
     SERVICES_DE_SOUTIEN_AUX_INDUSTRIES_EXTRACTIVES("Services de soutien aux industries extractives"),
     INDUSTRIES_ALIMENTAIRES("Industries alimentaires"),
     FABRICATION_DE_BOISSONS("Fabrication de boissons"),
-    FABRICATION_DE_PRODUITS__BASE_DE_TABAC("Fabrication de produits à base de tabac"),
+    FABRICATION_DE_PRODUITS_BASE_DE_TABAC("Fabrication de produits à base de tabac"),
     FABRICATION_DE_TEXTILES("Fabrication de textiles"),
     INDUSTRIE_DE_LHABILLEMENT("Industrie de l'habillement"),
     INDUSTRIE_DU_CUIR_ET_DE_LA_CHAUSSURE("Industrie du cuir et de la chaussure"),
@@ -557,7 +557,7 @@ public enum ProfessionEnum {
     ACTIVITS_AUXILIAIRES_DE_SERVICES_FINANCIERS_ET_DASSURANCE("Activités auxiliaires de services financiers et d'assurance"),
     ACTIVITS_IMMOBILIRES("Activités immobilières"),
     ACTIVITS_JURIDIQUES_ET_COMPTABLES("Activités juridiques et comptables"),
-    ACTIVITS_DES_SIGES_SOCIAUX__CONSEIL_DE_GESTION("Activités des sièges sociaux ; conseil de gestion"),
+    ACTIVITS_DES_SIGES_SOCIAUX_CONSEIL_DE_GESTION("Activités des sièges sociaux ; conseil de gestion"),
     ACTIVITS_DARCHITECTURE_ET_DINGNIERIE("Activités d'architecture et d'ingénierie"),
     ACTIVITS_DE_CONTRLE_ET_ANALYSES_TECHNIQUES("Activités de contrôle et analyses techniques"),
     RECHERCHEDVELOPPEMENT_SCIENTIFIQUE("Recherche-développement scientifique"),
@@ -565,7 +565,7 @@ public enum ProfessionEnum {
     AUTRES_ACTIVITS_SPCIALISES_SCIENTIFIQUES_ET_TECHNIQUES("Autres activités spécialisées, scientifiques et techniques"),
     ACTIVITS_VTRINAIRES("Activités vétérinaires"),
     ACTIVITS_DE_LOCATION_ET_LOCATIONBAIL("Activités de location et location-bail"),
-    ACTIVITS_LIES__LEMPLOI("Activités liées à l'emploi"),
+    ACTIVITS_LIES_LEMPLOI("Activités liées à l'emploi"),
     ACTIVITS_DES_AGENCES_DE_VOYAGE_ET_ACTIVITS_CONNEXES("Activités des agences de voyage et activités connexes"),
     ENQUTES_ET_SCURIT("Enquêtes et sécurité"),
     SERVICES_RELATIFS_AUX_BTIMENTS_ET_AMNAGEMENT_PAYSAGER("Services relatifs aux bâtiments et aménagement paysager"),
@@ -587,7 +587,7 @@ public enum ProfessionEnum {
     ACTIVITS_DES_ORGANISATIONS_ET_ORGANISMES_EXTRATERRITORIAUX("Activités des organisations et organismes extraterritoriaux")
 ;
 
-    private String description;
+    private final String description;
 
     ProfessionEnum(String description) {
         this.description = description;

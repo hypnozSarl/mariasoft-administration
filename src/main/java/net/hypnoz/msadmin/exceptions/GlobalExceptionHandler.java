@@ -16,7 +16,6 @@ import org.springframework.web.util.UriComponents;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -50,7 +49,7 @@ public class GlobalExceptionHandler {
                 .getFieldErrors()
                 .stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.toList());
+                .toList();
 
         errorGlobal.setErrors(errors);
 
