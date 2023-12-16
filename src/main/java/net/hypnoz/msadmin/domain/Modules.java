@@ -25,8 +25,9 @@ public class Modules implements Serializable {
     private String iconClass;
     private String active;
     private int ordre;
+    @NotNull
     @ManyToMany
-    @JoinTable(name = "commun_users_structureses",
+    @JoinTable(name = "commun_modules_structureses",
             joinColumns = @JoinColumn(name = "modules_modCode"),
             inverseJoinColumns = @JoinColumn(name = "structureses_id"))
     private Set<Structures> structureses = new LinkedHashSet<>();

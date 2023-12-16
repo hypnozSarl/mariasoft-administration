@@ -11,65 +11,69 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
 public class GroupeService implements IGroupeService {
     private final Logger log = LoggerFactory.getLogger(GroupeService.class);
 
     private final GroupesMapper groupesMapper;
     private final GroupesRepository groupesRepository;
+    private static final String LOG_CREATE_GROUP = "Request to create a group: {}";
+    private static final String LOG_GROUP_CREATED = "Group created: {}";
+    private static final String LOG_FIND_GROUP = "Unable to find group with id: {}";
+    private static final String LOG_UPDATE_GROUP = "Request to update group: {}";
+    private static final String LOG_GROUP_UPDATED = "Group updated: {}";
+    private static final String LOG_DELETE_GROUP = "Attempting to delete Group with info: {}";
+    private static final String LOG_FAILED_FIND_GROUP = "Failed to find Group id: {}";
+    private static final String LOG_GROUP_DELETED = "Group deleted with info: {}";
+    private static final String LOG_FETCHED_GROUPS = "Fetched all groups with group id: {}";
 
     public GroupeService(GroupesMapper groupesMapper, GroupesRepository groupesRepository) {
         this.groupesMapper = groupesMapper;
         this.groupesRepository = groupesRepository;
     }
 
-
     @Override
     public GroupesDto createGroupe(GroupesDto groupesDto) {
-        log.debug("Request to create a group: {}", groupesDto);
+        log.debug(LOG_CREATE_GROUP, groupesDto);
         ValidationCommunUtils.validate(groupesDto);
         Groupes groupes = groupesMapper.toEntity(groupesDto);
         Groupes addedGroup = groupesRepository.save(groupes);
-        log.debug("Group created: {}", addedGroup);
+        log.debug(LOG_GROUP_CREATED, addedGroup);
         return groupesMapper.toDto(addedGroup);
     }
 
     @Override
     public GroupesDto getGroupeById(Long id) {
-        Groupes existingGroup = groupesRepository.findById(id)
-                .orElseThrow(() -> {
-                    log.error("Unable to find group with id: {}", id);
-                    return new IllegalArgumentException("Group with given id not found");
-                });
+        Groupes existingGroup = groupesRepository.findById(id).orElseThrow(() -> {
+            log.error(LOG_FIND_GROUP, id);
+            return new IllegalArgumentException(LOG_FIND_GROUP);
+        });
         return groupesMapper.toDto(existingGroup);
     }
 
     @Override
     public GroupesDto updateGroupe(GroupesDto groupesDto) {
-        log.debug("Request to update group: {}", groupesDto);
+        log.debug(LOG_UPDATE_GROUP, groupesDto);
         ValidationCommunUtils.validate(groupesDto);
-        Groupes existingGroup = groupesRepository.findById(groupesDto.getId())
-                .orElseThrow(() -> {
-                    log.error("Unable to find group with id: {}", groupesDto.getId());
-                    return new IllegalArgumentException("Group with given id not found");
-                });
+        Groupes existingGroup = groupesRepository.findById(groupesDto.getId()).orElseThrow(() -> {
+            log.error(LOG_FIND_GROUP, groupesDto.getId());
+            return new IllegalArgumentException(LOG_FIND_GROUP);
+        });
         existingGroup = groupesMapper.partialUpdate(groupesDto, existingGroup);
         existingGroup = groupesRepository.saveAndFlush(existingGroup);
-        log.debug("Group updated: {}", groupesDto);
+        log.debug(LOG_GROUP_UPDATED, groupesDto);
         return groupesMapper.toDto(existingGroup);
     }
 
     @Override
     public void deleteGroupe(Long id) {
-        log.debug("Attempting to delete Structure with info: {}", id);
-        Groupes existingStructure = groupesRepository.findById(id)
-                .orElseThrow(() -> {
-                    log.error("Failed to find Structure id: {}", id);
-                    return new IllegalArgumentException("Structure with given id not found");
-                });
-        groupesRepository.delete(existingStructure);
-        log.debug("Structure deleted with info: {}", existingStructure);
+        log.debug(LOG_DELETE_GROUP, id);
+        Groupes existingGroup = groupesRepository.findById(id).orElseThrow(() -> {
+            log.error(LOG_FAILED_FIND_GROUP, id);
+            return new IllegalArgumentException(LOG_FIND_GROUP);
+        });
+        groupesRepository.delete(existingGroup);
+        log.debug(LOG_GROUP_DELETED, existingGroup);
     }
 
     @Override
@@ -77,7 +81,7 @@ public class GroupeService implements IGroupeService {
         List<GroupesDto> groupes = groupesRepository.findByStructures_Id(sid).stream()
                 .map(groupesMapper::toDto)
                 .toList();
-        log.debug("Fetched all groups with structure id: {}", sid);
+        log.debug(LOG_FETCHED_GROUPS, sid);
         return groupes;
     }
 }
