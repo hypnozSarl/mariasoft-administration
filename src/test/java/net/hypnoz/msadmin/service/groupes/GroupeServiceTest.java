@@ -30,7 +30,7 @@ public class GroupeServiceTest {
     @Test
     void shouldCreateGroupeWhenValidDataIsGiven() {
         GroupesDto groupesDto = new GroupesDto();
-        groupesDto.setGrpCode("Valid Group Code");
+        groupesDto.setGrpCode("Code");
         groupesDto.setGrpLibelle("Valid Group Label");
         groupesDto.setStructures(new StructuresDto());
 
@@ -64,7 +64,7 @@ public class GroupeServiceTest {
     @Test
     void shouldThrowExceptionWhenStructuresIsNull() {
         GroupesDto groupesDto = new GroupesDto();
-        groupesDto.setGrpCode("Valid Group Code");
+        groupesDto.setGrpCode("Code");
         groupesDto.setGrpLibelle("Valid Group Label");
         groupesDto.setStructures(null);
 
@@ -95,7 +95,7 @@ public class GroupeServiceTest {
     @Test
     void shouldCreateGroupeWhenGrpLibelleIsNull() {
         GroupesDto groupesDto = new GroupesDto();
-        groupesDto.setGrpCode("Valid Group Code");
+        groupesDto.setGrpCode("Code");
         groupesDto.setGrpLibelle(null);
         groupesDto.setStructures(new StructuresDto());
 
@@ -113,7 +113,7 @@ public class GroupeServiceTest {
     @Test
     void shouldThrowExceptionWhenNonUniqueGrpCodeIsGiven() {
         GroupesDto groupesDto = new GroupesDto();
-        groupesDto.setGrpCode("Duplicate Group Code");
+        groupesDto.setGrpCode("DupCode");
         groupesDto.setGrpLibelle("Valid Group Label");
         groupesDto.setStructures(new StructuresDto());
 
