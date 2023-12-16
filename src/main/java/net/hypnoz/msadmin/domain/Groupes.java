@@ -25,4 +25,8 @@ public class Groupes extends AbstractAuditingEntity<Long> implements Serializabl
     private String grpCode;
     private String grpLibelle;
 
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "structures_id")
+    private Structures structures;
 }
