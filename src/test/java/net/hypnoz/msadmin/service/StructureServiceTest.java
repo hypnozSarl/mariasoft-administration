@@ -4,6 +4,7 @@ package net.hypnoz.msadmin.service;
 import jakarta.validation.ConstraintViolationException;
 import net.hypnoz.msadmin.domain.Structures;
 import net.hypnoz.msadmin.dtos.StructuresDto;
+import net.hypnoz.msadmin.exceptions.ResourceNotFoundException;
 import net.hypnoz.msadmin.mappers.StructuresMapper;
 import net.hypnoz.msadmin.repository.StructuresRepository;
 import net.hypnoz.msadmin.service.structres.StructureService;
@@ -170,7 +171,7 @@ void shouldSuccessCreatingStructureWhenRaisonSocialeIsNull() {
 
         when(structuresRepository.findById(any())).thenReturn(Optional.empty());
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ResourceNotFoundException.class,
                 () -> structureService.updateStructure(structuresDto));
     }
     @Test
@@ -217,7 +218,7 @@ void shouldSuccessCreatingStructureWhenRaisonSocialeIsNull() {
 
         when(structuresRepository.findById(any())).thenReturn(Optional.empty());
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ResourceNotFoundException.class,
                 () -> structureService.deleteStructure(nonExistentId));
 
         verify(structuresRepository, times(0)).delete(any(Structures.class));
@@ -241,7 +242,7 @@ void shouldSuccessCreatingStructureWhenRaisonSocialeIsNull() {
         Long nonExistentId = 1L;
         when(structuresRepository.findById(any())).thenReturn(Optional.empty());
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ResourceNotFoundException.class,
                 () -> structureService.getStructure(nonExistentId));
     }
     @Test
@@ -266,7 +267,7 @@ void shouldSuccessCreatingStructureWhenRaisonSocialeIsNull() {
         when(structuresRepository.findById(any())).thenReturn(Optional.empty());
 
         // assert an exception is thrown when trying to upload a logo for the non-existing structure
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ResourceNotFoundException.class,
                 () -> structureService.uploadStructureLogo(structuresDto, file));
     }
 

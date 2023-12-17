@@ -17,8 +17,13 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -131,4 +136,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                       .content(new ObjectMapper().writeValueAsString(updateGroupesDto)))
               .andExpect(MockMvcResultMatchers.status().isInternalServerError());
    }
+
+    @Test
+    void getAllGroupeByStructure_ExistingId_ShouldReturnSuccess() throws Exception {
+        // Arrange
+        Long sid = 1L;
+        GroupesDto grpDto = new GroupesDto();
+        grpDto.setId(1L);
+        grpDto.setGrpCode("Code");
+        grpDto.setGrpLibelle("Libelle code");
+        grpDto.setStructures(new StructuresDto());
+
+        List<GroupesDto> expectedGroupList = new ArrayList<>();
+        expectedGroupList.add(grpDto);
+
+        when(groupeService.getAllGroupeByStructure(anyLong())).thenReturn(expectedGroupList);
+
+        // Act and Assert
+        mockMvc.perform(get("/api/groupes/structure/" + sid))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id", Matchers.is(grpDto.getId().intValue())))
+                .andExpect(jsonPath("$[0].grpCode", Matchers.is(grpDto.getGrpCode())));
+    }
 }

@@ -1,8 +1,11 @@
 package net.hypnoz.msadmin.web.rest;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import net.hypnoz.msadmin.dtos.GroupesDto;
-import net.hypnoz.msadmin.dtos.StructuresDto;
 import net.hypnoz.msadmin.service.groupes.GroupeService;
 import net.hypnoz.msadmin.web.rest.errors.BadRequestAlertException;
 import net.hypnoz.msadmin.web.rest.errors.HeaderUtil;
@@ -13,10 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.Content;
 
 import java.net.URI;
 import java.text.MessageFormat;
@@ -108,7 +107,7 @@ public class GroupesResource {
     @GetMapping("/structure/{sid}")
     public ResponseEntity<List<GroupesDto>> getAllGroupeByStructure(@PathVariable Long sid) {
         log.debug("REST request to get Groupes by Structure : {}", sid);
-        var  result = groupeService.getAllGroupeByStructure(sid);;
+        var  result = groupeService.getAllGroupeByStructure(sid);
         return ResponseEntity.ok()
                 .body(result);
     }

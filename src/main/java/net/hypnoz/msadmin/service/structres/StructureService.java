@@ -2,6 +2,7 @@ package net.hypnoz.msadmin.service.structres;
 
 import net.hypnoz.msadmin.domain.Structures;
 import net.hypnoz.msadmin.dtos.StructuresDto;
+import net.hypnoz.msadmin.exceptions.ResourceNotFoundException;
 import net.hypnoz.msadmin.mappers.StructuresMapper;
 import net.hypnoz.msadmin.repository.StructuresRepository;
 import net.hypnoz.msadmin.utils.OsUtils;
@@ -60,11 +61,7 @@ public class StructureService implements IStructureService {
     public StructuresDto updateStructure(StructuresDto structuresDto) {
         log.debug(ATTEMPT_UPDATE_MSG, structuresDto);
         ValidationCommunUtils.validate(structuresDto);
-        Structures existingStructure = structuresRepository.findById(structuresDto.getId())
-                .orElseThrow(() -> {
-                    log.error(STRUCTURE_NOT_FOUND_MSG, structuresDto.getId());
-                    return new IllegalArgumentException(STRUCTURE_NOT_FOUND_MSG);
-                });
+        Structures existingStructure = getOneStructure(structuresDto.getId());
         existingStructure = structuresMapper.partialUpdate(structuresDto, existingStructure);
         existingStructure = structuresRepository.saveAndFlush(existingStructure);
 
@@ -75,25 +72,16 @@ public class StructureService implements IStructureService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void deleteStructure(Long sid) {
         log.debug(ATTEMPT_DELETE_MSG, sid);
-        Structures existingStructure = structuresRepository.findById(sid)
-                .orElseThrow(() -> {
-                    log.error(STRUCTURE_NOT_FOUND_MSG, sid);
-                    throw new IllegalArgumentException(STRUCTURE_NOT_FOUND_MSG);
-                });
+        Structures existingStructure = getOneStructure(sid);
         structuresRepository.delete(existingStructure);
 
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class, readOnly = true)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = ResourceNotFoundException.class, readOnly = true)
     public StructuresDto getStructure(Long sid) {
         log.debug(ATTEMPT_GET_MSG, sid);
-        Structures structures = structuresRepository.findById(sid)
-                .orElseThrow(() -> {
-                    log.error(STRUCTURE_NOT_FOUND_MSG, sid);
-                    return new IllegalArgumentException("Structure with given id not found");
-                });
-
+        Structures structures = getOneStructure(sid);
         return structuresMapper.toDto(structures);
     }
 
@@ -121,11 +109,15 @@ public class StructureService implements IStructureService {
         }
     }
 
-    private Structures validateStructureExists(Long id) {
-        return structuresRepository.findById(id)
+    private void validateStructureExists(Long id) {
+        getOneStructure(id);
+    }
+
+    private Structures getOneStructure(Long id) {
+       return structuresRepository.findById(id)
                 .orElseThrow(() -> {
                     log.error(STRUCTURE_NOT_FOUND_MSG, id);
-                    return new IllegalArgumentException("Structure with given id not found");
+                    return new ResourceNotFoundException("Structure with given id not found");
                 });
     }
 
