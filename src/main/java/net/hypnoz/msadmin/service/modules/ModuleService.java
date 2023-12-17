@@ -80,7 +80,7 @@ public class ModuleService implements IModuleService{
     @Override
     public List<ModulesDto> getAllModulesNotLinked(Long sid) {
         log.debug("Getting all modules for structure with id: " + sid);
-        structureRepository.findById(sid).orElseThrow(() -> {
+        Structures myStructure = structureRepository.findById(sid).orElseThrow(() -> {
             log.error(STRUCTURE_NOT_FOUND_MSG);
             return new ResourceNotFoundException(STRUCTURE_NOT_FOUND_MSG);
         });
@@ -93,7 +93,7 @@ public class ModuleService implements IModuleService{
                         .build())
                 .toList();
 
-        List<Modules> linkedModules = moduleRepository.findByStructureses_Id(sid);
+        List<Modules> linkedModules = moduleRepository.findByStructureses_Id(myStructure.getId());
 
         return allModules.stream()
                 .filter(mod -> linkedModules.stream().noneMatch(lm -> lm.getId().equals(mod.getId())))
