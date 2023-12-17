@@ -17,26 +17,16 @@
  *
  */
 
-package net.hypnoz.msadmin.repository;
+package net.hypnoz.msadmin.service.modules;
 
-import net.hypnoz.msadmin.domain.Modules;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
+import net.hypnoz.msadmin.dtos.ModulesDto;
 
 import java.util.List;
 
-public interface ModulesRepository extends JpaRepository<Modules, String> {
-    @Transactional
-    @Modifying
-    @Query(value = "delete from commun_modules_structureses  m where m.modules_id = :id and m.structureses_id = :sid",nativeQuery = true)
-    void deleteModuleStructures(@Param("id") String id, @Param("sid") Long  sid);
-
-    boolean existsByIdAndStructureses_Id(String id, Long id1);
-
-    List<Modules> findByStructureses_Id(Long id);
-
-
+public interface IModuleService {
+    ModulesDto affectationModuleStructure(ModulesDto modulesDto);
+    List<ModulesDto> getAllModulesNotLinked(Long sid);
+    List<ModulesDto> getAllModuleByStructures(Long sid);
+    ModulesDto getModule(String id);
+    void unLinkedModuleToStructure(List<ModulesDto> modulesDtoList,Long sid);
 }

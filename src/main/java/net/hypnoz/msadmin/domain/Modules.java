@@ -24,8 +24,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -36,20 +36,20 @@ import java.util.Set;
 @Table(name = "commun_module")
 public class Modules implements Serializable {
     @Id
-    private String modCode;
-    private String modLibelle;
-    private String modDescription;
+    private String id;
+    private String name;
+    private String host;
     @NotNull
     private String url;
-    private String iconClass;
+    private String icon;
     private String active;
     private int ordre;
     @NotNull
     @ManyToMany
     @JoinTable(name = "commun_modules_structureses",
-            joinColumns = @JoinColumn(name = "modules_modCode"),
+            joinColumns = @JoinColumn(name = "modules_id"),
             inverseJoinColumns = @JoinColumn(name = "structureses_id"))
-    private Set<Structures> structureses = new LinkedHashSet<>();
+    private List<Structures> structureses = new LinkedList<>();
 
     @PrePersist
     public void beforePersist() {
