@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import lombok.Getter;
 import lombok.Setter;
 import net.hypnoz.msadmin.enumeration.FormeJuridiqueEnum;
 import net.hypnoz.msadmin.enumeration.TypeSocieteEnum;
@@ -18,6 +19,7 @@ import java.util.Objects;
 
 
 @Setter
+@Getter
 @Entity
 @Table(name = "commun_structures")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -135,280 +137,24 @@ public class Structures extends AbstractAuditingEntity<Long> implements Serializ
     private Integer strEtatMandat;
     private String strSignature;
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public Integer getStrEcommerceVal() {
-        return strEcommerceVal;
-    }
-
-    public Integer getStrEtat() {
-        return strEtat;
-    }
-
-    public Integer getStrMode() {
-        return strMode;
-    }
-
-    public Integer getStrMaitreCabinet() {
-        return strMaitreCabinet;
-    }
-
-    public String getStrRaisonSociale() {
-        return strRaisonSociale;
-    }
-
-    public String getStrDescriptif() {
-        return strDescriptif;
-    }
-
-    public String getStrSigle() {
-        return strSigle;
-    }
-
-    public String getStrNomPays() {
-        return strNomPays;
-    }
-
-    public String getStrCodePays() {
-        return strCodePays;
-    }
-
-    public String getStrIsoPays() {
-        return strIsoPays;
-    }
-
-    public String getStrDevise() {
-        return strDevise;
-    }
-
-    public Integer getStrSiteDevise() {
-        return strSiteDevise;
-    }
-
-    public String getStrLangue() {
-        return strLangue;
-    }
-
-    public String getStrZoneFiscale() {
-        return strZoneFiscale;
-    }
-
-    public String getStrZoneCommerciale() {
-        return strZoneCommerciale;
-    }
-
-    public String getStrBilanSocial() {
-        return strBilanSocial;
-    }
-
-    public String getStrFormeJuridique() {
-        return strFormeJuridique;
-    }
-
-    public String getStrtypEentreprise() {
-        return strtypEentreprise;
-    }
-
-    public String getStrAdresse() {
-        return strAdresse;
-    }
-
-    public String getStrRue() {
-        return strRue;
-    }
-
-    public String getStrLot() {
-        return strLot;
-    }
-
-    public String getStrPorte() {
-        return strPorte;
-    }
-
-    public String getStrQuartier() {
-        return strQuartier;
-    }
-
-    public String getStrVille() {
-        return strVille;
-    }
-
-    public String getStrCommune() {
-        return strCommune;
-    }
-
-    public String getStrDepartement() {
-        return strDepartement;
-    }
-
-    public String getStrCodePostal() {
-        return strCodePostal;
-    }
-
-    public String getStrCedex() {
-        return strCedex;
-    }
-
-    public String getStrTelephone() {
-        return strTelephone;
-    }
-
-    public String getStrFax() {
-        return strFax;
-    }
-
-    public String getStrActiviteCommerciale() {
-        return strActiviteCommerciale;
-    }
-
-    public String getStrLogo() {
-        return strLogo;
-    }
-
-    public Integer getStrTypeContact() {
-        return strTypeContact;
-    }
-
-    public String getStrResponsable() {
-        return strResponsable;
-    }
-
-    public String getStrQualiteResponsable() {
-        return strQualiteResponsable;
-    }
-
-    public String getStrCapital() {
-        return strCapital;
-    }
-
-    public Boolean getStrStructure() {
-        return strStructure;
-    }
-
-    public Boolean getStrChantier() {
-        return strChantier;
-    }
-
-    public Boolean getStrMission() {
-        return strMission;
-    }
-
-    public Boolean getStrSite() {
-        return strSite;
-    }
-
-    public Boolean getStrRegion() {
-        return strRegion;
-    }
-
-    public Boolean getStrUsine() {
-        return strUsine;
-    }
-
-    public Boolean getStrActivite() {
-        return strActivite;
-    }
-
-    public Integer getStrActiviteModeSasie() {
-        return strActiviteModeSasie;
-    }
-
-    public Boolean getStrParc() {
-        return strParc;
-    }
-
-    public Integer getStrDossier() {
-        return strDossier;
-    }
-
-    public Integer getStrNbCarDossier() {
-        return strNbCarDossier;
-    }
-
-    public Integer getStrChainageAxes() {
-        return strChainageAxes;
-    }
-
-    public Boolean getStrAgent() {
-        return strAgent;
-    }
-
-    public Boolean getStrCles() {
-        return strCles;
-    }
-
-    public Boolean getStrProjet() {
-        return strProjet;
-    }
-
-    public String getStrQuart1DebutHeure() {
-        return strQuart1DebutHeure;
-    }
-
-    public String getStrQuart1DebutMinute() {
-        return strQuart1DebutMinute;
-    }
-
-    public String getStrQuart1FinHeure() {
-        return strQuart1FinHeure;
-    }
-
-    public String getStrQuart1FinMinute() {
-        return strQuart1FinMinute;
-    }
-
-    public String getStrQuart2FinHeure() {
-        return strQuart2FinHeure;
-    }
-
-    public String getStrQuart2FinMinute() {
-        return strQuart2FinMinute;
-    }
-
-    public String getStrQuart3FinHeure() {
-        return strQuart3FinHeure;
-    }
-
-    public String getStrQuart3FinMinute() {
-        return strQuart3FinMinute;
-    }
-
-    public String getStrBanqueDefaut() {
-        return strBanqueDefaut;
-    }
-
-    public LocalDate getStrDteDebMandat() {
-        return strDteDebMandat;
-    }
-
-    public LocalDate getStrDteFinMandat() {
-        return strDteFinMandat;
-    }
-
-    public Integer getStrEtatMandat() {
-        return strEtatMandat;
-    }
-
-    public String getStrSignature() {
-        return strSignature;
-    }
 
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
-        Structures that = (Structures) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+        if (o instanceof HibernateProxy hp) {
+            return hp.getHibernateLazyInitializer().getPersistentClass() == this.getClass()
+                    && Objects.equals(getId(), ((Structures) hp).getId());
+        } else if (o instanceof Structures s) {
+            return s.getClass() == this.getClass()
+                    && Objects.equals(getId(), s.getId());
+        }
+        return false;
     }
-
     @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    public int hashCode() {
+        if (this instanceof HibernateProxy hp) {
+            return hp.getHibernateLazyInitializer().getPersistentClass().hashCode();
+        }
+        return getClass().hashCode();
     }
 }
