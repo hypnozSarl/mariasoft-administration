@@ -119,7 +119,6 @@ class StructureResourceTest {
                 .andExpect(status().isInternalServerError());
     }
 
-    // Test deleteStructure method, success case.
     @Test
     void shouldReturnOkWhenStructureDeleteSucceeds() throws Exception {
         doNothing().when(structureService).deleteStructure(any(Long.class));
@@ -129,7 +128,6 @@ class StructureResourceTest {
                 .andExpect(status().isOk());
     }
 
-    // Test deleteStructure method, failure case.
     @Test
     void shouldReturnInternalServerErrorWhenStructureDeleteFails() throws Exception {
         doThrow(new RuntimeException()).when(structureService).deleteStructure(any(Long.class));
