@@ -137,24 +137,4 @@ public class Structures extends AbstractAuditingEntity<Long> implements Serializ
     private Integer strEtatMandat;
     private String strSignature;
 
-
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o instanceof HibernateProxy hp) {
-            return hp.getHibernateLazyInitializer().getPersistentClass() == this.getClass()
-                    && Objects.equals(getId(), ((Structures) hp).getId());
-        } else if (o instanceof Structures s) {
-            return s.getClass() == this.getClass()
-                    && Objects.equals(getId(), s.getId());
-        }
-        return false;
-    }
-    @Override
-    public int hashCode() {
-        if (this instanceof HibernateProxy hp) {
-            return hp.getHibernateLazyInitializer().getPersistentClass().hashCode();
-        }
-        return getClass().hashCode();
-    }
 }
