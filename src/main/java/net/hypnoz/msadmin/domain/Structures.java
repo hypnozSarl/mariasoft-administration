@@ -22,7 +22,6 @@ package net.hypnoz.msadmin.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 import lombok.Getter;
 import lombok.Setter;
 import net.hypnoz.msadmin.enumeration.FormeJuridiqueEnum;
@@ -30,11 +29,9 @@ import net.hypnoz.msadmin.enumeration.TypeSocieteEnum;
 import net.hypnoz.msadmin.enumeration.ZoneCommercialEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.proxy.HibernateProxy;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
 
 
 @Setter

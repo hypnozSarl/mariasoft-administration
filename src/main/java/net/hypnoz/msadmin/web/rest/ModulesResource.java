@@ -24,7 +24,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-import net.hypnoz.msadmin.dtos.GroupesDto;
 import net.hypnoz.msadmin.dtos.ModulesDto;
 import net.hypnoz.msadmin.service.modules.ModuleService;
 import net.hypnoz.msadmin.web.rest.errors.DefaultErrorApiResponse;

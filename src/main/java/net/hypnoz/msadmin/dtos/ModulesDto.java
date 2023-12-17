@@ -1,6 +1,5 @@
 package net.hypnoz.msadmin.dtos;
 
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
