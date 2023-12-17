@@ -79,7 +79,6 @@ public class ModuleService implements IModuleService{
 
     @Override
     public List<ModulesDto> getAllModulesNotLinked(Long sid) {
-        log.debug("Getting all modules for structure with id: " + sid);
         Structures myStructure = structureRepository.findById(sid).orElseThrow(() -> {
             log.error(STRUCTURE_NOT_FOUND_MSG);
             return new ResourceNotFoundException(STRUCTURE_NOT_FOUND_MSG);

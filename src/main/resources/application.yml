@@ -75,7 +75,7 @@ springdoc:
 
 mariasoft:
   clientApp:
-    name: 'msmonoApp'
+    name: 'mariasoft-administration'
   mail:
     from: admin@localhost
   api-docs:

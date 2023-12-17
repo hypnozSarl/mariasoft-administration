@@ -27,6 +27,7 @@ import jakarta.validation.Valid;
 import net.hypnoz.msadmin.dtos.GroupesDto;
 import net.hypnoz.msadmin.service.groupes.GroupeService;
 import net.hypnoz.msadmin.web.rest.errors.BadRequestAlertException;
+import net.hypnoz.msadmin.web.rest.errors.DefaultErrorApiResponse;
 import net.hypnoz.msadmin.web.rest.errors.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/groupes")
-
+@DefaultErrorApiResponse
 public class GroupesResource {
     private static final String ENTITY_NAME = "groupes";
     private final Logger log = LoggerFactory.getLogger(GroupesResource.class);
