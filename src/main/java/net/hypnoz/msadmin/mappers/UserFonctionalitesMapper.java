@@ -19,16 +19,19 @@
 
 package net.hypnoz.msadmin.mappers;
 
-import net.hypnoz.msadmin.domain.Users;
-import net.hypnoz.msadmin.dtos.UsersDto;
+import net.hypnoz.msadmin.domain.UserFonctionalites;
+import net.hypnoz.msadmin.dtos.UserFonctionalitesDto;
+import net.hypnoz.msadmin.mappers.FonctionnaliteMapper;
+import net.hypnoz.msadmin.mappers.UserFonctionalityIdMapper;
+import net.hypnoz.msadmin.mappers.UsersMapper;
 import org.mapstruct.*;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING, uses = {CommunCommunicationMapper.class, GroupesMapper.class})
-public interface UsersMapper {
-    Users toEntity(UsersDto usersDto);
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING, uses = {UserFonctionalityIdMapper.class, UsersMapper.class, FonctionnaliteMapper.class})
+public interface UserFonctionalitesMapper {
+    UserFonctionalites toEntity(UserFonctionalitesDto userFonctionalitesDto);
 
-    UsersDto toDto(Users users);
+    UserFonctionalitesDto toDto(UserFonctionalites userFonctionalites);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Users partialUpdate(UsersDto usersDto, @MappingTarget Users users);
+    UserFonctionalites partialUpdate(UserFonctionalitesDto userFonctionalitesDto, @MappingTarget UserFonctionalites userFonctionalites);
 }

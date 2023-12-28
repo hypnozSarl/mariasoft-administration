@@ -17,7 +17,7 @@
  *
  */
 
-package net.hypnoz.msadmin.service.modules;
+package net.hypnoz.msadmin.service.menus;
 
 import lombok.Getter;
 

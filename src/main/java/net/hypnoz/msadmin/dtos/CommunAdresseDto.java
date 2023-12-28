@@ -24,15 +24,16 @@ import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 
-
+/**
+ * DTO for {@link net.hypnoz.msadmin.domain.CommunAdresse}
+ */
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AdresseDto implements Serializable {
+public class CommunAdresseDto implements Serializable {
     Long id;
     String usrAdresse;
     String usrBp;

@@ -64,7 +64,7 @@ public class GroupesResource {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<GroupesDto> createGroupe(@Valid @RequestBody GroupesDto groupesDto) {
-        log.debug("REST request to save Structure : {}", groupesDto);
+        log.debug("REST request to save Groupe : {}", groupesDto);
         try {
             if (groupesDto.getId() != null) {
                 throw new BadRequestAlertException("A new Groupe cannot already have an ID", "groupeManagement", "idexists");

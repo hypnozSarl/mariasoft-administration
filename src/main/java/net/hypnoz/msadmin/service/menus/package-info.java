@@ -17,18 +17,4 @@
  *
  */
 
-package net.hypnoz.msadmin.mappers;
-
-import net.hypnoz.msadmin.domain.Users;
-import net.hypnoz.msadmin.dtos.UsersDto;
-import org.mapstruct.*;
-
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING, uses = {CommunCommunicationMapper.class, GroupesMapper.class})
-public interface UsersMapper {
-    Users toEntity(UsersDto usersDto);
-
-    UsersDto toDto(Users users);
-
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Users partialUpdate(UsersDto usersDto, @MappingTarget Users users);
-}
+package net.hypnoz.msadmin.service.menus;

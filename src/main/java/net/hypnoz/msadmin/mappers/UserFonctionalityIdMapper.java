@@ -17,4 +17,18 @@
  *
  */
 
-package net.hypnoz.msadmin.service.modules;
+package net.hypnoz.msadmin.mappers;
+
+import net.hypnoz.msadmin.domain.UserFonctionalityId;
+import net.hypnoz.msadmin.dtos.UserFonctionalityIdDto;
+import org.mapstruct.*;
+
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
+public interface UserFonctionalityIdMapper {
+    UserFonctionalityId toEntity(UserFonctionalityIdDto userFonctionalityIdDto);
+
+    UserFonctionalityIdDto toDto(UserFonctionalityId userFonctionalityId);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    UserFonctionalityId partialUpdate(UserFonctionalityIdDto userFonctionalityIdDto, @MappingTarget UserFonctionalityId userFonctionalityId);
+}

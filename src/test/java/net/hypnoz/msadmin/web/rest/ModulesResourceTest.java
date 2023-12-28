@@ -22,7 +22,7 @@ package net.hypnoz.msadmin.web.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.hypnoz.msadmin.dtos.ModulesDto;
 import net.hypnoz.msadmin.dtos.StructuresDto;
-import net.hypnoz.msadmin.service.modules.ModuleService;
+import net.hypnoz.msadmin.service.menus.MenuApplicatifService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -45,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     private MockMvc mockMvc;
 
     @MockBean
-    private ModuleService moduleService;
+    private MenuApplicatifService menuApplicatifService;
 
     @Test
      void modulesResourceShouldReturnModulesNotLinked() throws Exception {
@@ -77,7 +77,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                        .icon("icon1")
                        .url("http://localhost/module1")
                        .iconClass("iconClass1")
-                       .active("active1")
                        .ordre(1)
                        .structureses(structuresDtoList)
                        .build(),
@@ -88,12 +87,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                        .icon("icon2")
                        .url("http://localhost/module2")
                        .iconClass("iconClass2")
-                       .active("active2")
                        .ordre(2)
                        .structureses(structuresDtoList)
                        .build()
        );
-        when(moduleService.getAllModulesNotLinked(1L)).thenReturn(modules);
+        when(menuApplicatifService.getAllModulesNotLinked(1L)).thenReturn(modules);
 
         mockMvc.perform(get("/api/modules/1/modulesNotLinked"))
                 .andExpect(status().isAccepted())
@@ -129,7 +127,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                        .icon("icon1")
                        .url("http://localhost/module1")
                        .iconClass("iconClass1")
-                       .active("active1")
                        .ordre(1)
                        .structureses(structuresDtoList)
                        .build(),
@@ -140,12 +137,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                        .icon("icon2")
                        .url("http://localhost/module2")
                        .iconClass("iconClass2")
-                       .active("active2")
                        .ordre(2)
                        .structureses(structuresDtoList)
                        .build()
        );
-        when(moduleService.getAllModuleByStructures(1L)).thenReturn(modules);
+        when(menuApplicatifService.getAllModuleByStructures(1L)).thenReturn(modules);
 
         mockMvc.perform(get("/api/modules/1/modulesByStructures"))
                 .andExpect(status().isAccepted())

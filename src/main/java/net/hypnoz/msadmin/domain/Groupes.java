@@ -29,6 +29,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
 import java.io.Serializable;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @ToString
 @Getter
@@ -55,4 +57,24 @@ public class Groupes extends AbstractAuditingEntity<Long> implements Serializabl
     @ToString.Exclude
     @ManyToOne(cascade = {CascadeType.ALL})
     private Structures structures;
+
+    @ToString.Exclude
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "cmm_groupe_moduleses",
+            joinColumns = @JoinColumn(name = "groupes_id"),
+            inverseJoinColumns = @JoinColumn(name = "moduleses_id"))
+    private Set<Modules> moduleses = new LinkedHashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "cmm_groupe_applicationses",
+            joinColumns = @JoinColumn(name = "groupes_id"),
+            inverseJoinColumns = @JoinColumn(name = "applicationses_id"))
+    private Set<Applications> applicationses = new LinkedHashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "cmm_groupe_fonctionnalites",
+            joinColumns = @JoinColumn(name = "groupes_id"),
+            inverseJoinColumns = @JoinColumn(name = "fonctionnalites_id"))
+    private Set<Fonctionnalite> fonctionnalites = new LinkedHashSet<>();
+
 }

@@ -19,16 +19,16 @@
 
 package net.hypnoz.msadmin.mappers;
 
-import net.hypnoz.msadmin.domain.Users;
-import net.hypnoz.msadmin.dtos.UsersDto;
+import net.hypnoz.msadmin.domain.Fonctionnalite;
+import net.hypnoz.msadmin.dtos.FonctionnaliteDto;
 import org.mapstruct.*;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING, uses = {CommunCommunicationMapper.class, GroupesMapper.class})
-public interface UsersMapper {
-    Users toEntity(UsersDto usersDto);
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING, uses = {ApplicationsMapper.class})
+public interface FonctionnaliteMapper {
+    Fonctionnalite toEntity(FonctionnaliteDto fonctionnaliteDto);
 
-    UsersDto toDto(Users users);
+    FonctionnaliteDto toDto(Fonctionnalite fonctionnalite);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Users partialUpdate(UsersDto usersDto, @MappingTarget Users users);
+    Fonctionnalite partialUpdate(FonctionnaliteDto fonctionnaliteDto, @MappingTarget Fonctionnalite fonctionnalite);
 }

@@ -21,9 +21,12 @@ package net.hypnoz.msadmin.exceptions;
 
 
 import net.hypnoz.msadmin.web.rest.errors.BadRequestAlertException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -33,13 +36,14 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponents;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GlobalExceptionHandler {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(BadRequestAlertException.class)
     public ResponseEntity<String> handleBadRequestAlertException(BadRequestAlertException ex) {
@@ -73,5 +77,12 @@ public class GlobalExceptionHandler {
         errorGlobal.setErrors(errors);
 
         return new ResponseEntity<>(errorGlobal, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({SQLException.class, DataAccessException.class})
+    public ResponseEntity<String> handleDatabaseExceptions(Exception ex) {
+
+        LOGGER.error("Database access error occurred", ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur pendant l'exécution SQL : " + ex.getMessage());
     }
 }

@@ -19,25 +19,11 @@
 
 package net.hypnoz.msadmin.repository;
 
-import net.hypnoz.msadmin.domain.Applications;
-import net.hypnoz.msadmin.domain.Groupes;
+import net.hypnoz.msadmin.domain.Fonctionnalite;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
-public interface GroupesRepository extends JpaRepository<Groupes, Long> {
-
-    boolean existsByIdAndFonctionnalites_IdIn(Long id, Set<String> ids);
-
-    boolean existsByIdAndApplicationses_IdIn(Long id, Set<String> ids);
-
-    @Query("select (count(g) > 0) from Groupes g inner join g.moduleses moduleses where g.id = ?1 and moduleses.id in ?2")
-    boolean existsByIdAndModuleses_IdIn(Long id, Set<String> ids);
-
-    List<Groupes> findByStructures_Id(Long id);
-
+public interface FonctionnaliteRepository extends JpaRepository<Fonctionnalite, String> {
+    List<Fonctionnalite> findByApplications_IdAndApplications_Modules_Id(String id, String id1);
 }

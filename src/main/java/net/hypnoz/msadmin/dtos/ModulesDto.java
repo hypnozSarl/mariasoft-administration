@@ -27,7 +27,6 @@ public class ModulesDto implements Serializable {
     @NotNull
     String url;
     String iconClass;
-    String active;
     int ordre;
     @NotNull
     private List<StructuresDto> structureses;

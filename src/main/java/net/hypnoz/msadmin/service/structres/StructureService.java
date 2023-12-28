@@ -40,6 +40,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
+import static net.hypnoz.msadmin.utils.validators.ConstantLogger.*;
+
+
 @Service
 public class StructureService implements IStructureService {
 
@@ -49,15 +52,7 @@ public class StructureService implements IStructureService {
     private final StructuresMapper structuresMapper;
 
     // Constants for log messages
-    private static final String STRUCTURE_NOT_FOUND_MSG = "Failed to find Structure id: {}";
-    private static final String ATTEMPT_UPDATE_MSG = "Attempting to update Structure with info: {}";
-    private static final String ATTEMPT_CREATE_MSG = "Attempting to create Structure with info: {}";
-    private static final String ATTEMPT_DELETE_MSG = "Attempting to delete Structure with info: {}";
-    private static final String ATTEMPT_GET_MSG = "Attempting to get Structure by id: {}";
-    private static final String ATTEMPT_UPLOAD_LOGO_MSG = "Attempting to upload a logo for structure ID: {}";
-    private static final String UPLOAD_LOGO_ERROR_MSG = "Error while uploading logo for structure ID: {}";
-    private static final String DIR_CREATED_MSG = "Directory 'structures-logo' didn't exist and was created";
-    private static final String LOGO_DELETION_MSG = "Previous logo has been deleted";
+
 
     public StructureService(StructuresRepository structuresRepository, StructuresMapper structuresMapper) {
         this.structuresRepository = structuresRepository;

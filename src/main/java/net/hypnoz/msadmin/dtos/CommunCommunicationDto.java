@@ -17,39 +17,34 @@
  *
  */
 
-package net.hypnoz.msadmin.domain;
+package net.hypnoz.msadmin.dtos;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.Where;
+import lombok.experimental.FieldDefaults;
+import net.hypnoz.msadmin.domain.Etats;
 
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
+import java.time.Instant;
 
+/**
+ * DTO for {@link net.hypnoz.msadmin.domain.CommunCommunication}
+ */
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "commun_module")
-public class Modules implements Serializable {
-    @Id
-    private String id;
-    private String name;
-    private String host;
-    @NotNull
-    private String url;
-    private String icon;
-    private int ordre;
-    @NotNull
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "commun_modules_structureses",
-            joinColumns = @JoinColumn(name = "modules_id"),
-            inverseJoinColumns = @JoinColumn(name = "structureses_id"))
-    private List<Structures> structureses = new LinkedList<>();
-
-
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class CommunCommunicationDto implements Serializable {
+    String createdBy;
+    Instant createdDate;
+    String lastModifiedBy;
+    Instant lastModifiedDate;
+    Etats flagEtat;
+    Long id;
+    String usrMail;
+    String usrSkype;
+    String usrMsn;
+    String usrYahoo;
+    String usrTelBureau;
 }

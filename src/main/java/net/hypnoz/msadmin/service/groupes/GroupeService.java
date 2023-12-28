@@ -21,12 +21,16 @@ package net.hypnoz.msadmin.service.groupes;
 
 import net.hypnoz.msadmin.domain.Groupes;
 import net.hypnoz.msadmin.dtos.GroupesDto;
+import net.hypnoz.msadmin.exceptions.ResourceNotFoundException;
 import net.hypnoz.msadmin.mappers.GroupesMapper;
 import net.hypnoz.msadmin.repository.GroupesRepository;
+import net.hypnoz.msadmin.repository.StructuresRepository;
 import net.hypnoz.msadmin.utils.validators.ValidationCommunUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,6 +40,8 @@ public class GroupeService implements IGroupeService {
 
     private final GroupesMapper groupesMapper;
     private final GroupesRepository groupesRepository;
+    private final StructuresRepository structuresRepository;
+    private static final String STRUCTURE_NOT_FOUND_MSG = "Failed to find Structure id: {}";
     private static final String LOG_CREATE_GROUP = "Request to create a group: {}";
     private static final String LOG_GROUP_CREATED = "Group created: {}";
     private static final String LOG_FIND_GROUP = "Unable to find group with id: {}";
@@ -46,17 +52,24 @@ public class GroupeService implements IGroupeService {
     private static final String LOG_GROUP_DELETED = "Group deleted with info: {}";
     private static final String LOG_FETCHED_GROUPS = "Fetched all groups with group id: {}";
 
-    public GroupeService(GroupesMapper groupesMapper, GroupesRepository groupesRepository) {
+    public GroupeService(GroupesMapper groupesMapper, GroupesRepository groupesRepository, StructuresRepository structuresRepository) {
         this.groupesMapper = groupesMapper;
         this.groupesRepository = groupesRepository;
+        this.structuresRepository = structuresRepository;
     }
-
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public GroupesDto createGroupe(GroupesDto groupesDto) {
         log.debug(LOG_CREATE_GROUP, groupesDto);
+       var structures = structuresRepository.findById(groupesDto.getStructures().getId())
+                .orElseThrow(()->{
+                    log.error(STRUCTURE_NOT_FOUND_MSG, groupesDto.getStructures().getId());
+                    return new ResourceNotFoundException("Structure with given id not found");
+                });
         ValidationCommunUtils.validate(groupesDto);
         Groupes groupes = groupesMapper.toEntity(groupesDto);
-        Groupes addedGroup = groupesRepository.save(groupes);
+        groupes.setStructures(structures);
+        Groupes addedGroup = groupesRepository.saveAndFlush(groupes);
         log.debug(LOG_GROUP_CREATED, addedGroup);
         return groupesMapper.toDto(addedGroup);
     }

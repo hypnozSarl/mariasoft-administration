@@ -17,16 +17,11 @@
  *
  */
 
-package net.hypnoz.msadmin.service.modules;
+package net.hypnoz.msadmin.repository;
 
-import net.hypnoz.msadmin.dtos.ModulesDto;
+import net.hypnoz.msadmin.domain.UserApplicationId;
+import net.hypnoz.msadmin.domain.UserApplications;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface IModuleService {
-    ModulesDto affectationModuleStructure(ModulesDto modulesDto);
-    List<ModulesDto> getAllModulesNotLinked(Long sid);
-    List<ModulesDto> getAllModuleByStructures(Long sid);
-    ModulesDto getModule(String id);
-    void unLinkedModuleToStructure(List<ModulesDto> modulesDtoList,Long sid);
+public interface UserApplicationsRepository extends JpaRepository<UserApplications, UserApplicationId> {
 }

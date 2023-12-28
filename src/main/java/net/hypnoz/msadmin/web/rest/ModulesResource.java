@@ -24,8 +24,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import net.hypnoz.msadmin.dtos.ApplicationsDto;
 import net.hypnoz.msadmin.dtos.ModulesDto;
-import net.hypnoz.msadmin.service.modules.ModuleService;
+import net.hypnoz.msadmin.service.menus.MenuApplicatifService;
 import net.hypnoz.msadmin.web.rest.errors.DefaultErrorApiResponse;
 import net.hypnoz.msadmin.web.rest.errors.HeaderUtil;
 import org.slf4j.Logger;
@@ -49,21 +50,21 @@ public class ModulesResource {
     private final Logger log = LoggerFactory.getLogger(ModulesResource.class);
     @Value("${mariasoft.clientApp.name}")
     private String applicationName;
-    private final ModuleService moduleService;
+    private final MenuApplicatifService moduleService;
 
-    public ModulesResource(ModuleService moduleService) {
-        this.moduleService = moduleService;
+    public ModulesResource(MenuApplicatifService menuApplicatifService) {
+        this.moduleService = menuApplicatifService;
     }
-    @PostMapping("/affectationStructure")
+    @PostMapping("/affectationStructure/{sid}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Affectation Module Structure with Success",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ModulesResource.class)))
     })
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ModulesDto> affectModuleStructure(@Valid @RequestBody ModulesDto modulesDto) throws URISyntaxException {
+    public ResponseEntity<ModulesDto> affectModuleStructure(@Valid @RequestBody ModulesDto modulesDto,@PathVariable Long sid) throws URISyntaxException {
         log.debug("Request to affectModuleStructure: {}", modulesDto);
-        ModulesDto result = moduleService.affectationModuleStructure(modulesDto);
+        ModulesDto result = moduleService.affectationModuleStructure(modulesDto,sid);
         log.debug("Response from affectModuleStructure: {}", result);
         return ResponseEntity.created(new URI(MessageFormat.format("/api/module/{0}", result.getId())))
                 .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getName()))
@@ -114,4 +115,28 @@ public class ModulesResource {
         moduleService.unLinkedModuleToStructure(modulesDtoList, sid);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Getting List Application Default by Module with Success",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ModulesResource.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{codeModule}/applicationsDefault")
+    public ResponseEntity<List<ApplicationsDto>> getApplicationsDefaultByModule(@PathVariable String codeModule) {
+        List<ApplicationsDto> applications = moduleService.getAllApplicationDefaultByModule(codeModule);
+        return ResponseEntity.accepted().headers(HeaderUtil.createEntityCreationAlert(applicationName, true,
+                ENTITY_NAME, "")).body(applications);
+    }
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Adding Applications for Groupes with Success",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ModulesResource.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/addApplicationsForGroupes")
+    public ResponseEntity<List<ApplicationsDto>> addApplicationsForGroupes(@RequestBody List<ApplicationsDto> applicationsDtos, @RequestHeader("module") String idModule, @RequestHeader("groupe")  Long idGroupe) {
+        List<ApplicationsDto> applications = moduleService.addApplicationForGroupes(applicationsDtos, idModule, idGroupe);
+        return ResponseEntity.accepted().headers(HeaderUtil.createEntityCreationAlert(applicationName, true,
+                ENTITY_NAME, "")).body(applications);
+    }
 }

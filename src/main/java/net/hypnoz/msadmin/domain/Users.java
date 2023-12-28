@@ -36,7 +36,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "commun_users")
 @Where(clause = "flag_etat <> 'DELETED'")
-@SQLDelete(sql = "UPDATE cmm_users SET flag_etat = 'DELETED' WHERE id = ?", check = ResultCheckStyle.COUNT)
+@SQLDelete(sql = "UPDATE commun_users SET flag_etat = 'DELETED' WHERE id = ?", check = ResultCheckStyle.COUNT)
 public class Users extends AbstractAuditingEntity<Long> implements Serializable {
     private static final long serialVersionUID = 1L;
 

@@ -17,39 +17,24 @@
  *
  */
 
-package net.hypnoz.msadmin.domain;
+package net.hypnoz.msadmin.dtos;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
-import org.hibernate.annotations.Where;
+import lombok.Value;
 
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
 
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "commun_module")
-public class Modules implements Serializable {
-    @Id
-    private String id;
-    private String name;
-    private String host;
-    @NotNull
-    private String url;
-    private String icon;
-    private int ordre;
-    @NotNull
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "commun_modules_structureses",
-            joinColumns = @JoinColumn(name = "modules_id"),
-            inverseJoinColumns = @JoinColumn(name = "structureses_id"))
-    private List<Structures> structureses = new LinkedList<>();
-
-
+/**
+ * DTO for {@link net.hypnoz.msadmin.domain.UserFonctionalites}
+ */
+@Value
+public class UserFonctionalitesDto implements Serializable {
+    UserFonctionalityIdDto id;
+    UsersDto user;
+    FonctionnaliteDto fonctionalite;
+    boolean ecriture;
+    boolean lecture;
+    boolean modification;
+    boolean suppression;
+    boolean impression;
+    boolean transfert;
 }

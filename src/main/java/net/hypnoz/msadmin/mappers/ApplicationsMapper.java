@@ -17,27 +17,18 @@
  *
  */
 
-package net.hypnoz.msadmin.repository;
+package net.hypnoz.msadmin.mappers;
 
 import net.hypnoz.msadmin.domain.Applications;
-import net.hypnoz.msadmin.domain.Groupes;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import net.hypnoz.msadmin.dtos.ApplicationsDto;
+import org.mapstruct.*;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING, uses = {ModulesMapper.class})
+public interface ApplicationsMapper {
+    Applications toEntity(ApplicationsDto applicationsDto);
 
-public interface GroupesRepository extends JpaRepository<Groupes, Long> {
+    ApplicationsDto toDto(Applications applications);
 
-    boolean existsByIdAndFonctionnalites_IdIn(Long id, Set<String> ids);
-
-    boolean existsByIdAndApplicationses_IdIn(Long id, Set<String> ids);
-
-    @Query("select (count(g) > 0) from Groupes g inner join g.moduleses moduleses where g.id = ?1 and moduleses.id in ?2")
-    boolean existsByIdAndModuleses_IdIn(Long id, Set<String> ids);
-
-    List<Groupes> findByStructures_Id(Long id);
-
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    Applications partialUpdate(ApplicationsDto applicationsDto, @MappingTarget Applications applications);
 }

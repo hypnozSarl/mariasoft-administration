@@ -17,26 +17,11 @@
  *
  */
 
-package net.hypnoz.msadmin.dtos;
+package net.hypnoz.msadmin.repository;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import net.hypnoz.msadmin.domain.UserModuleId;
+import net.hypnoz.msadmin.domain.UserModules;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.io.Serializable;
-
-
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class CommunicationDto implements Serializable {
-    Long id;
-    String usrMail;
-    String usrSkype;
-    String usrMsn;
-    String usrYahoo;
-    String usrTelBureau;
+public interface UserModulesRepository extends JpaRepository<UserModules, UserModuleId> {
 }

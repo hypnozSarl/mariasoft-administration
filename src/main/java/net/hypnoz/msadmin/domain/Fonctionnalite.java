@@ -20,13 +20,8 @@
 package net.hypnoz.msadmin.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.Where;
-
-import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -34,22 +29,20 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "commun_module")
-public class Modules implements Serializable {
+@Table(name = "commun_fonctionnalite")
+public class Fonctionnalite {
     @Id
-    private String id;
-    private String name;
-    private String host;
-    @NotNull
-    private String url;
-    private String icon;
-    private int ordre;
-    @NotNull
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "commun_modules_structureses",
-            joinColumns = @JoinColumn(name = "modules_id"),
-            inverseJoinColumns = @JoinColumn(name = "structureses_id"))
-    private List<Structures> structureses = new LinkedList<>();
-
-
+    private  String id;
+    @NonNull
+    private  String label;
+    @NonNull
+    private String link;
+    private String icone;
+    @NonNull
+    private String type;
+    private Integer ordre;
+    private boolean used;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "applications_id")
+    private Applications applications;
 }

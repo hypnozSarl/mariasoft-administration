@@ -27,8 +27,8 @@ import net.hypnoz.msadmin.exceptions.ResourceNotFoundException;
 import net.hypnoz.msadmin.mappers.ModulesMapper;
 import net.hypnoz.msadmin.repository.ModulesRepository;
 import net.hypnoz.msadmin.repository.StructuresRepository;
-import net.hypnoz.msadmin.service.modules.ModuleDefault;
-import net.hypnoz.msadmin.service.modules.ModuleService;
+import net.hypnoz.msadmin.service.menus.ModuleDefault;
+import net.hypnoz.msadmin.service.menus.MenuApplicatifService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,9 +43,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ModuleServiceTest {
+class MenuApplicatifServiceTest {
     @InjectMocks
-    private ModuleService moduleService;
+    private MenuApplicatifService menuApplicatifService;
 
     @Mock
     private ModulesRepository moduleRepository;
@@ -99,16 +99,17 @@ class ModuleServiceTest {
         when(moduleRepository.saveAndFlush(any(Modules.class))).thenReturn(modules);
         when(moduleMapper.toDto(any(Modules.class))).thenReturn(modulesDto);
 
-        ModulesDto result = moduleService.affectationModuleStructure(modulesDto);
+        ModulesDto result = menuApplicatifService.affectationModuleStructure(modulesDto,structures.getId());
 
         assertEquals(modulesDto, result);
     }
     @Test
     void affectationModuleStructure_StructureNotFound() {
+
         when(structureRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-            moduleService.affectationModuleStructure(modulesDto);
+            menuApplicatifService.affectationModuleStructure(modulesDto,structures.getId());
         });
 
         String expectedMessage = "Structure not found";
@@ -122,7 +123,7 @@ class ModuleServiceTest {
         when(moduleRepository.existsByIdAndStructureses_Id(any(String.class), any(Long.class))).thenReturn(true);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            moduleService.affectationModuleStructure(modulesDto);
+            menuApplicatifService.affectationModuleStructure(modulesDto,structures.getId());
         });
 
         String expectedMessage = "Module is already linked with the structure";
@@ -158,7 +159,7 @@ class ModuleServiceTest {
         when(moduleRepository.findByStructureses_Id(sid)).thenReturn(linkedModules);
 
         // When
-        List<ModulesDto> result = moduleService.getAllModulesNotLinked(sid);
+        List<ModulesDto> result = menuApplicatifService.getAllModulesNotLinked(sid);
 
         // Then
         assertEquals(allModulesDto.size(), result.size());
@@ -167,7 +168,7 @@ class ModuleServiceTest {
     void shouldThrowResourceNotFoundExceptiontestGetAllModulesNotLinked() {
         when(structureRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> moduleService.getAllModulesNotLinked(1L));
+        assertThrows(ResourceNotFoundException.class, () -> menuApplicatifService.getAllModulesNotLinked(1L));
     }
     @Test
      void shoutGetAllModuleByStructures() {
@@ -186,7 +187,7 @@ class ModuleServiceTest {
         when(moduleMapper.toDto(existingModule)).thenReturn(mappedModule);
 
         // Call the service method
-        List<ModulesDto> actualResult = moduleService.getAllModuleByStructures(sid);
+        List<ModulesDto> actualResult = menuApplicatifService.getAllModuleByStructures(sid);
 
         // Verify the interactions and the result
         assertEquals(Collections.singletonList(mappedModule), actualResult);
@@ -203,7 +204,7 @@ class ModuleServiceTest {
         when(moduleMapper.toDto(existingModule)).thenReturn(modulesDto);
 
         // Call the service method
-        ModulesDto actualResult = moduleService.getModule(id);
+        ModulesDto actualResult = menuApplicatifService.getModule(id);
 
         // Verify the interactions and the result
         assertEquals(modulesDto, actualResult);
@@ -219,7 +220,7 @@ class ModuleServiceTest {
         when(moduleRepository.existsByIdAndStructureses_Id(modulesDto.getId(), sid)).thenReturn(true);
 
         // Call the service method
-        moduleService.unLinkedModuleToStructure(modulesDtoList, sid);
+        menuApplicatifService.unLinkedModuleToStructure(modulesDtoList, sid);
 
         // Verify the interaction
         verify(moduleRepository, times(1)).deleteModuleStructures(modulesDto.getId(), sid);
@@ -233,7 +234,7 @@ class ModuleServiceTest {
         modulesDto.setHost("host url");
         modulesDto.setStructureses(List.of(new StructuresDto()));
         Exception exception = assertThrows(ResourceNotFoundException.class,
-                () -> moduleService.affectationModuleStructure(modulesDto));
+                () -> menuApplicatifService.affectationModuleStructure(modulesDto,structures.getId()));
         assertEquals("Structure not found", exception.getMessage());
     }
     @Test
@@ -254,7 +255,13 @@ class ModuleServiceTest {
         when(moduleRepository.existsByIdAndStructureses_Id(modulesDto.getId(), structuresdto.getId())).thenReturn(true);
         // Module is already linked with the structure
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> moduleService.affectationModuleStructure(modulesDto));
+                () -> menuApplicatifService.affectationModuleStructure(modulesDto,structures.getId()));
         assertEquals("Module is already linked with the structure", exception.getMessage());
+    }
+    @Test
+    void shouldGetAllModuleNotLinkedStructureWhenStructureNotFound(){
+      when(structureRepository.findById(1L)).thenReturn(Optional.empty());
+      assertThrows(ResourceNotFoundException.class,()->menuApplicatifService.getAllModulesNotLinked(1L));
+
     }
 }
