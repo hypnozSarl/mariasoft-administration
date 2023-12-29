@@ -1,0 +1,58 @@
+[
+  {
+    "id": "M0_A1_F1",
+    "label": "Structures",
+    "link": "param/structure",
+    "icone": "arrow_right",
+    "type": "M",
+    "codeApplication": "M0_A1"
+  },
+  {
+    "id": "M0_A1_F4",
+    "label": "Analytiques",
+    "link": "param/activites",
+    "icone": "arrow_right",
+    "type": "M",
+    "codeApplication": "M0_A1"
+  },
+  {
+    "id": "M0_A1_F5",
+    "label": "Habilitation",
+    "link": "param/habilitation",
+    "icone": "arrow_right",
+    "type": "M",
+    "codeApplication": "M0_A1"
+  },
+  {
+    "id": "M0_A1_F6",
+    "label": "Model Impression",
+    "link": "param/mimpression",
+    "icone": "arrow_right",
+    "type": "M",
+    "codeApplication": "M0_A1"
+  },
+  {
+    "id": "M0_A2_F1",
+    "label": "Goupes",
+    "link": "roles/groups",
+    "icone": "arrow_right",
+    "type": "M",
+    "codeApplication": "M0_A2"
+  },
+  {
+    "id": "M0_A2_F2",
+    "label": "Utilisateurs",
+    "link": "roles/users",
+    "icone": "arrow_right",
+    "type": "M",
+    "codeApplication": "M0_A2"
+  },
+  {
+    "id": "M0_A2_F4",
+    "label": "Piste d'audit",
+    "link": "roles/piste",
+    "icone": "arrow_right",
+    "type": "M",
+    "codeApplication": "M0_A2"
+  }
+]

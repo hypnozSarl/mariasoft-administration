@@ -23,5 +23,8 @@ import net.hypnoz.msadmin.domain.UserFonctionalites;
 import net.hypnoz.msadmin.domain.UserFonctionalityId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface UserFonctionalitesRepository extends JpaRepository<UserFonctionalites, UserFonctionalityId> {
+    List<UserFonctionalites> findByUser_Id(Long id);
 }

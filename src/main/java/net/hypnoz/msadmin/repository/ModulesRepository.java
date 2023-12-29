@@ -26,7 +26,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface ModulesRepository extends JpaRepository<Modules, String> {
     @Transactional
@@ -34,7 +36,8 @@ public interface ModulesRepository extends JpaRepository<Modules, String> {
     @Query(value = "delete from commun_modules_structureses  m where m.modules_id = :id and m.structureses_id = :sid",nativeQuery = true)
     void deleteModuleStructures(@Param("id") String id, @Param("sid") Long  sid);
 
-    boolean existsByIdAndStructureses_Id(String id, Long id1);
+    boolean existsByIdAndStructureses_IdIn(String id, Set<Long> ids);
+
 
     List<Modules> findByStructureses_Id(Long id);
 

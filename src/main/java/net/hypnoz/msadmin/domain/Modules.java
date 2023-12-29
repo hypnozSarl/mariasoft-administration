@@ -23,10 +23,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.Where;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -35,6 +39,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "commun_module")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Modules implements Serializable {
     @Id
     private String id;
@@ -49,7 +54,6 @@ public class Modules implements Serializable {
     @JoinTable(name = "commun_modules_structureses",
             joinColumns = @JoinColumn(name = "modules_id"),
             inverseJoinColumns = @JoinColumn(name = "structureses_id"))
-    private List<Structures> structureses = new LinkedList<>();
-
+    private List<Structures> structureses =new LinkedList<>();
 
 }

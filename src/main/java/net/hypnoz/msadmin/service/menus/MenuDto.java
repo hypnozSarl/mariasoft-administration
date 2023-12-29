@@ -17,14 +17,21 @@
  *
  */
 
-package net.hypnoz.msadmin.repository;
+package net.hypnoz.msadmin.service.menus;
 
-import net.hypnoz.msadmin.domain.UserModuleId;
-import net.hypnoz.msadmin.domain.UserModules;
-import org.springframework.data.jpa.repository.JpaRepository;
+import lombok.*;
+import net.hypnoz.msadmin.dtos.ApplicationsDto;
+import net.hypnoz.msadmin.dtos.FonctionnaliteDto;
+import net.hypnoz.msadmin.dtos.ModulesDto;
 
 import java.util.List;
-
-public interface UserModulesRepository extends JpaRepository<UserModules, UserModuleId> {
-    List<UserModules> findByUser_Id(Long id);
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class MenuDto {
+    List<ModulesDto> modulesDtos;
+    List<ApplicationsDto> applicationsDtos;
+    List<FonctionnaliteDto> fonctionnaliteDtos;
 }

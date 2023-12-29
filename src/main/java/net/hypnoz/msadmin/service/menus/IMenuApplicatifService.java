@@ -40,8 +40,10 @@ public interface IMenuApplicatifService {
     List<ModulesDto> getModuleLinkedGroupe(Long groupeId);
     List<ApplicationsDto> getAllApplicationLinkedGroupeByModule(String codeModule,Long groupeId);
     List<FonctionnaliteDto> getAllFonctionaliteLinkedGroupeByApplication(String codeApplication,Long groupeId);
-    List<ModulesDto> linkUserToModules(List<ModulesDto> modulesDtoList,Long uid);
-    List<ApplicationsDto> linkUserToApplication(List<ApplicationsDto> applicationsDtos,Long uid,String codeModule);
-    List<FonctionnaliteDto> linkUserToFonctionalite(List<FonctionnaliteDto> fonctionaliteDtos, Long uid, String codeApplication);
+    List<ModulesDto> addlinkUserToModules(List<ModulesDto> modulesDtoList,Long uid);
+    List<ApplicationsDto> addlinkUserToApplication(List<ApplicationsDto> applicationsDtos,Long uid,String codeModule);
+    List<FonctionnaliteDto> addlinkUserToFonctionalite(List<FonctionnaliteDto> fonctionaliteDtos, Long uid, String codeApplication);
     FonctionnaliteDto  addDroitUserToFonctionnalite(List<DroiteFonctionnaliteEnum> droiteFonctionnaliteEnums,Long uid,String codeFonctionnalite);
+
+    MenuDto getMenusByUsers(Long uid);
 }

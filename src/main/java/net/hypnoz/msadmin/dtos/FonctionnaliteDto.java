@@ -41,9 +41,7 @@ public class FonctionnaliteDto implements Serializable {
     String label;
     @NotNull
     String link;
-    @NotNull
     String icone;
-    @NotNull
     String type;
     Integer ordre;
     boolean used;

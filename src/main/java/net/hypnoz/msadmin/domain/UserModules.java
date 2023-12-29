@@ -42,7 +42,7 @@ public class UserModules implements Serializable {
     private Users user;
 
     @ManyToOne
-    @MapsId("moduleId")
+    @MapsId("modulesId")
     private Modules modules;
 }
 

@@ -88,7 +88,7 @@ public class MenuApplicatifService implements IMenuApplicatifService {
             throw new ResourceNotFoundException(STRUCTURE_NOT_FOUND_MSG);
         }
 
-        var moduleLinkedStructure = moduleRepository.existsByIdAndStructureses_Id(modulesDto.getId(), structure.get().getId());
+        var moduleLinkedStructure = moduleRepository.existsByIdAndStructureses_IdIn(modulesDto.getId(), Set.of(structure.get().getId()));
         log.debug("Checking if module is already linked with the structure");
         if (moduleLinkedStructure) {
             log.error(MODULE_LINKED_STRUCTURE_MSG);
@@ -104,7 +104,7 @@ public class MenuApplicatifService implements IMenuApplicatifService {
     @Override
     public List<ModulesDto> getAllModulesNotLinked(Long sid) {
         Structures myStructure = structureRepository.findById(sid).orElseThrow(() -> {
-            log.error(STRUCTURE_NOT_FOUND_MSG);
+            log.error(STRUCTURE_NOT_FOUND_MSG,sid);
             return new ResourceNotFoundException(STRUCTURE_NOT_FOUND_MSG);
         });
 
@@ -140,7 +140,7 @@ public class MenuApplicatifService implements IMenuApplicatifService {
     @Override
     public void unLinkedModuleToStructure(List<ModulesDto> modulesDtoList, Long sid) {
         for (ModulesDto mod : modulesDtoList) {
-            if (moduleRepository.existsByIdAndStructureses_Id(mod.getId(), sid)) {
+            if (moduleRepository.existsByIdAndStructureses_IdIn(mod.getId(), Set.of(sid))) {
                 moduleRepository.deleteModuleStructures(mod.getId(), sid);
             }
         }
@@ -148,15 +148,16 @@ public class MenuApplicatifService implements IMenuApplicatifService {
 
     @Override
     public List<ModulesDto> affectationModuleGroupe( List<ModulesDto> modulesDtoList, Long groupeId) {
+
+        Groupes groupe = groupesRepository.findById(groupeId).orElseThrow(() -> new ResourceNotFoundException(GROUPE_NOT_FOUND_MSG));
         var moduleList = modulesDtoList.stream().map(mod -> moduleRepository.findById(mod.getId()).orElseThrow(() -> {
             log.error(MODULE_NOT_FOUND_MSG);
             return new ResourceNotFoundException(MODULE_NOT_FOUND_MSG);
         })).toList();
 
-        Groupes groupe = groupesRepository.findById(groupeId).orElseThrow(() -> new ResourceNotFoundException("Groupe not found"));
-
         for (Modules module : moduleList) {
-            if (!groupesRepository.existsByIdAndModuleses_IdIn(groupe.getId(), Set.of(module.getId()))) {
+            if (!groupesRepository.existsByIdAndModuleses_IdIn(groupe.getId(), Set.of(module.getId()))
+                    && moduleRepository.existsByIdAndStructureses_IdIn(module.getId(),Set.of(groupe.getStructures().getId()))) {
                 groupe.getModuleses().add(module);
             }
         }
@@ -254,7 +255,7 @@ public class MenuApplicatifService implements IMenuApplicatifService {
     public List<ModulesDto> getModuleLinkedGroupe(Long groupeId) {
         return groupesRepository.findById(groupeId)
                 .map(Groupes::getModuleses)
-                .orElseThrow(() -> new ResourceNotFoundException("Groupe not found"))
+                .orElseThrow(() -> new ResourceNotFoundException(GROUPE_NOT_FOUND_MSG))
                 .stream()
                 .map(moduleMapper::toDto)
                 .toList();
@@ -264,7 +265,7 @@ public class MenuApplicatifService implements IMenuApplicatifService {
     public List<ApplicationsDto> getAllApplicationLinkedGroupeByModule(String codeModule, Long groupeId) {
       return groupesRepository.findById(groupeId)
               .map(Groupes::getApplicationses)
-              .orElseThrow(() -> new ResourceNotFoundException("Groupe not found"))
+              .orElseThrow(() -> new ResourceNotFoundException(GROUPE_NOT_FOUND_MSG))
               .stream()
               .map(applicationsMapper::toDto)
               .toList();
@@ -275,24 +276,28 @@ public class MenuApplicatifService implements IMenuApplicatifService {
     public List<FonctionnaliteDto> getAllFonctionaliteLinkedGroupeByApplication(String codeApplication, Long groupeId) {
         return groupesRepository.findById(groupeId)
                 .map(Groupes::getFonctionnalites)
-                .orElseThrow(() -> new ResourceNotFoundException("Groupe not found"))
+                .orElseThrow(() -> new ResourceNotFoundException(GROUPE_NOT_FOUND_MSG))
                 .stream()
                 .map(fonctionnaliteMapper::toDto)
                 .toList();
     }
 
     @Override
-    public List<ModulesDto> linkUserToModules( List<ModulesDto> modulesDtos, Long uid) {
+    public List<ModulesDto> addlinkUserToModules( List<ModulesDto> modulesDtos, Long uid) {
         Users user = usersRepository.findById(uid).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         for (ModulesDto modulesDto : modulesDtos) {
-            Modules module = moduleRepository.findById(modulesDto.getId()).orElseThrow(() -> new ResourceNotFoundException("Module not found"));
+            Modules module = moduleRepository.findById(modulesDto.getId()).orElseThrow(() -> new ResourceNotFoundException(MODULE_NOT_FOUND_MSG));
             String moduleId = module.getId();
 
             if (isEligibleForAddingUserModule(user.getGroupes().getId(), moduleId)
                     && (!doesUserModuleExist(moduleId, uid))) {
 
                 UserModules newUserModule = new UserModules();
+                newUserModule.setId(UserModuleId.builder()
+                                .modulesId(module.getId())
+                                .userId(user.getId())
+                        .build());
                 newUserModule.setUser(user);
                 newUserModule.setModules(module);
                 userModulesRepository.saveAndFlush(newUserModule);
@@ -303,7 +308,7 @@ public class MenuApplicatifService implements IMenuApplicatifService {
     }
 
     @Override
-    public List<ApplicationsDto> linkUserToApplication( List<ApplicationsDto> applicationsDtos, Long uid, String codeModule) {
+    public List<ApplicationsDto> addlinkUserToApplication( List<ApplicationsDto> applicationsDtos, Long uid, String codeModule) {
         List<Applications> applications = applicationsRepository.findAllById(applicationsDtos.stream()
                 .map(ApplicationsDto::getId)
                 .toList());
@@ -314,7 +319,7 @@ public class MenuApplicatifService implements IMenuApplicatifService {
         });
 
         Modules module = moduleRepository.findById(codeModule)
-                .orElseThrow(() -> new ResourceNotFoundException("Module not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(MODULE_NOT_FOUND_MSG));
 
         Groupes userGroup = user.getGroupes();
 
@@ -326,7 +331,7 @@ public class MenuApplicatifService implements IMenuApplicatifService {
     }
 
     @Override
-    public List<FonctionnaliteDto> linkUserToFonctionalite( List<FonctionnaliteDto> fonctionaliteDtos, Long uid, String codeApplication) {
+    public List<FonctionnaliteDto> addlinkUserToFonctionalite( List<FonctionnaliteDto> fonctionaliteDtos, Long uid, String codeApplication) {
         List<Fonctionnalite> fonctionnalites = fonctionnaliteRepository.findAllById(fonctionaliteDtos.stream().map(FonctionnaliteDto::getId).toList());
         Users user = usersRepository.findById(uid).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_MSG));
         Groupes groupe = groupesRepository.findById(user.getGroupes().getId()).orElseThrow(() -> new ResourceNotFoundException(GROUPE_NOT_FOUND_MSG));
@@ -367,10 +372,31 @@ public class MenuApplicatifService implements IMenuApplicatifService {
                 case "DUPLICATED" -> userFonctionalites.setDuplicated(true);
                 case "TRANSFERT" -> userFonctionalites.setTransfert(true);
                 case "IMPRESSION" -> userFonctionalites.setImpression(true);
+                default -> throw new IllegalArgumentException("Invalid droit fonctionnalite: " + droite.name());
             }
             userFonctionalitesRepository.saveAndFlush(userFonctionalites);
         }
       return fonctionnaliteMapper.toDto(userFonctionalites.getFonctionalite());
+    }
+
+    @Override
+    public MenuDto getMenusByUsers(Long uid) {
+        Users users = usersRepository.findById(uid).orElseThrow(()->new ResourceNotFoundException(USER_NOT_FOUND_MSG));
+        List<UserModules> userModules = userModulesRepository.findByUser_Id(users.getId());
+        List<ModulesDto> modulesDtoList = userModules.stream()
+                .map(userModule -> moduleMapper.toDto(userModule.getModules()))
+                .toList();
+        List<ApplicationsDto> applicationsDtos = userApplicationsRepository.findByUser_Id(users.getId()).stream()
+                .map(ua->applicationsMapper.toDto(ua.getApplications()))
+                .toList();
+        List<FonctionnaliteDto> fonctionnaliteDtos = userFonctionalitesRepository.findByUser_Id(users.getId())
+                .stream().map(uf->fonctionnaliteMapper.toDto(uf.getFonctionalite())).toList();
+        return MenuDto.builder()
+                .modulesDtos(modulesDtoList)
+                .applicationsDtos(applicationsDtos)
+                .fonctionnaliteDtos(fonctionnaliteDtos)
+                .build();
+
     }
 
     private void linkUserAppIfEligible(Users user,  Modules module, Groupes userGroup,  Applications app){
@@ -394,7 +420,7 @@ public class MenuApplicatifService implements IMenuApplicatifService {
     }
 
     private boolean doesUserModuleExist(String moduleId, Long userId) {
-        UserModuleId userModuleId = UserModuleId.builder().moduleId(moduleId).userId(userId).build();
+        UserModuleId userModuleId = UserModuleId.builder().modulesId(moduleId).userId(userId).build();
         return userModulesRepository.existsById(userModuleId);
     }
 }

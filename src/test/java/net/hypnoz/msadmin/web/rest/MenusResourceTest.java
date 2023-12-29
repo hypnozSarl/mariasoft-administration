@@ -39,8 +39,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(ModulesResource.class)
- class ModulesResourceTest {
+@WebMvcTest(MenusResource.class)
+ class MenusResourceTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -93,7 +93,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
        );
         when(menuApplicatifService.getAllModulesNotLinked(1L)).thenReturn(modules);
 
-        mockMvc.perform(get("/api/modules/1/modulesNotLinked"))
+        mockMvc.perform(get("/api/menus/1/modulesNotLinked"))
                 .andExpect(status().isAccepted())
                 .andExpect(content().json(new ObjectMapper().writeValueAsString(modules))); // Validate the response body/contents here
     }
@@ -143,7 +143,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
        );
         when(menuApplicatifService.getAllModuleByStructures(1L)).thenReturn(modules);
 
-        mockMvc.perform(get("/api/modules/1/modulesByStructures"))
+        mockMvc.perform(get("/api/menus/1/modulesByStructures"))
                 .andExpect(status().isAccepted())
                 .andExpect(content().json(new ObjectMapper().writeValueAsString(modules))); // Validate the response body/contents here
     }
@@ -151,7 +151,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
     @Test
      void modulesResourceShouldUnlinkModuleToStructure() throws Exception {
-        mockMvc.perform(delete("/api/modules/1/unlinkedModuleToStructure")
+        mockMvc.perform(delete("/api/menus/1/unlinkedModuleToStructure")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(Collections.emptyList()))) // Define your ModulesDto list data here
                 .andExpect(status().isOk());

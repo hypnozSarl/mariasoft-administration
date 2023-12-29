@@ -23,5 +23,8 @@ import net.hypnoz.msadmin.domain.UserApplicationId;
 import net.hypnoz.msadmin.domain.UserApplications;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface UserApplicationsRepository extends JpaRepository<UserApplications, UserApplicationId> {
+    List<UserApplications> findByUser_Id(Long id);
 }
