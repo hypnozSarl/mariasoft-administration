@@ -94,7 +94,7 @@ class MenuApplicatifServiceTest {
     void affectationModuleStructure_Success() {
         initCasSuccess();
         when(structureRepository.findById(any(Long.class))).thenReturn(Optional.of(structures));
-        when(moduleRepository.existsByIdAndStructureses_Id(any(String.class), any(Long.class))).thenReturn(false);
+        when(moduleRepository.existsByIdAndStructureses_IdIn(any(String.class), Set.of(any(Long.class)))).thenReturn(false);
         when(moduleMapper.toEntity(any(ModulesDto.class))).thenReturn(modules);
         when(moduleRepository.saveAndFlush(any(Modules.class))).thenReturn(modules);
         when(moduleMapper.toDto(any(Modules.class))).thenReturn(modulesDto);
@@ -120,7 +120,7 @@ class MenuApplicatifServiceTest {
     @Test
     void affectationModuleStructure_ModuleAlreadyLinked() {
         when(structureRepository.findById(any(Long.class))).thenReturn(Optional.of(structures));
-        when(moduleRepository.existsByIdAndStructureses_Id(any(String.class), any(Long.class))).thenReturn(true);
+        when(moduleRepository.existsByIdAndStructureses_IdIn(any(String.class), Set.of(any(Long.class)))).thenReturn(true);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             menuApplicatifService.affectationModuleStructure(modulesDto,structures.getId());
@@ -217,7 +217,7 @@ class MenuApplicatifServiceTest {
         modulesDto.setId("id");
         List<ModulesDto> modulesDtoList = Collections.singletonList(modulesDto);
 
-        when(moduleRepository.existsByIdAndStructureses_Id(modulesDto.getId(), sid)).thenReturn(true);
+        when(moduleRepository.existsByIdAndStructureses_IdIn(modulesDto.getId(), Set.of(sid))).thenReturn(true);
 
         // Call the service method
         menuApplicatifService.unLinkedModuleToStructure(modulesDtoList, sid);
@@ -252,7 +252,7 @@ class MenuApplicatifServiceTest {
         modulesDto.setHost("host url");
         modulesDto.setStructureses(List.of(structuresdto));
         when(structureRepository.findById(structuresdto.getId())).thenReturn(Optional.of(structures));
-        when(moduleRepository.existsByIdAndStructureses_Id(modulesDto.getId(), structuresdto.getId())).thenReturn(true);
+        when(moduleRepository.existsByIdAndStructureses_IdIn(modulesDto.getId(), Set.of(structuresdto.getId()))).thenReturn(true);
         // Module is already linked with the structure
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> menuApplicatifService.affectationModuleStructure(modulesDto,structures.getId()));
